@@ -1,12 +1,15 @@
 use actix_web::{HttpResponse, web};
 
-use crate::services::products;
+use crate::config::db::Db;
+use crate::services::products_svc;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/products", web::get().to(get_list_products));
+    cfg.route("/products", web::get().to(get_list_products_route));
 }
 
-async fn get_list_products() -> HttpResponse {
-    let msg = products::service::list_products();
-    HttpResponse::Ok().body(msg)
+async fn get_list_products_route(db: web::Data<Db>) -> HttpResponse {
+    match products_svc::list_products(db.get_ref()).await {
+        Ok(items) => HttpResponse::Ok().json(items),
+        Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
+    }
 }
