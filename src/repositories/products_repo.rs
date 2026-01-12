@@ -12,5 +12,6 @@ pub async fn get_all_products_db(db: &Db) -> Result<Vec<Product>, Error> {
     let cursor = collection.find(doc! {}).await?;
 
     let products: Vec<Product> = cursor.try_collect().await?;
+
     Ok(products)
 }

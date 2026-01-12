@@ -18,8 +18,10 @@ macro_rules! async_seeder {
 }
 
 // List of seeders as (name, function)
-const SEEDERS: &[(&str, SeederFn)] =
-    &[("init_products", async_seeder!(products_svc::seed_products))];
+const SEEDERS: &[(&str, SeederFn)] = &[(
+    "init_products",
+    async_seeder!(products_svc::seed_products_svc),
+)];
 
 #[tokio::main]
 async fn main() {

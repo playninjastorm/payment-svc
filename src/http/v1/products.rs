@@ -8,7 +8,7 @@ pub fn routes(cfg: &mut web::ServiceConfig) {
 }
 
 async fn get_list_products_route(db: web::Data<Db>) -> HttpResponse {
-    match products_svc::list_products(db.get_ref()).await {
+    match products_svc::list_products_svc(db.get_ref()).await {
         Ok(items) => HttpResponse::Ok().json(items),
         Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
     }
