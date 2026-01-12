@@ -887,7 +887,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nk-store"
+name = "nkstore"
 version = "0.1.0"
 dependencies = [
  "actix-web",

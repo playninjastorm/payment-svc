@@ -1,9 +1,12 @@
 use log::info;
 use tokio::time::{Duration, interval};
 
+use nkstore::config::Config;
+
 #[tokio::main]
 async fn main() {
-    dotenvy::dotenv().ok();
+    let _cfg = Config::load();
+
     env_logger::init();
 
     info!("Worker started");
@@ -12,10 +15,9 @@ async fn main() {
 
     loop {
         tokio::select! {
-            _ = ticker.tick() =>{
+            _ = ticker.tick() => {
                 info!("Hello world");
             }
-
             _ = tokio::signal::ctrl_c() => {
                 info!("Shutting down worker");
                 break;

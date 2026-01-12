@@ -1,6 +1,8 @@
 use actix_web::{App, HttpServer, Responder, get};
 use log::info;
 
+use nkstore::config::Config;
+
 #[get("/")]
 async fn hola_mundo() -> impl Responder {
     "hola mundo"
@@ -8,10 +10,11 @@ async fn hola_mundo() -> impl Responder {
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    dotenvy::dotenv().ok();
+    let cfg = Config::load();
+
     env_logger::init();
 
-    let addr = "0.0.0.0:8080";
+    let addr = format!("0.0.0.0:{}", cfg.port);
     info!("Server running at http://{addr}");
 
     HttpServer::new(|| App::new().service(hola_mundo))

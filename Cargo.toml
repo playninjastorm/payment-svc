@@ -1,8 +1,8 @@
 [package]
-name = "nk-store"
+name = "nkstore"
 version = "0.1.0"
 edition = "2024"
-default-run = "nk-store"
+default-run = "nkstore"
 
 [dependencies]
 actix-web = "4.12.1"
