@@ -1,6 +1,6 @@
 use std::{env, future::Future, pin::Pin};
 
-use nkstore::services::products_svc;
+use nkstore::features::products_svc;
 
 // Type alias for a seeder function (always async)
 type SeederFn = fn() -> Pin<Box<dyn Future<Output = ()>>>;

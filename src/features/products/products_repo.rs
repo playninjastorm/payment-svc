@@ -2,7 +2,7 @@ use futures_util::TryStreamExt;
 use mongodb::{bson::doc, error::Error};
 
 use crate::config::db::Db;
-use crate::models::products_models::Product;
+use crate::features::products_models::Product;
 
 const COLLECTION_NAME: &str = "storeProducts";
 

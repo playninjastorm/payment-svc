@@ -1,7 +1,7 @@
 use actix_web::{HttpResponse, web};
 
 use crate::config::db::Db;
-use crate::services::products_svc;
+use crate::features::products_svc;
 
 pub fn routes(cfg: &mut web::ServiceConfig) {
     cfg.route("/products", web::get().to(get_list_products_route));
