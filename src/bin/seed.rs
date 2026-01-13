@@ -1,6 +1,6 @@
 use std::{env, future::Future, pin::Pin};
 
-use nkstore::features::products_svc;
+use nkpay::features::product_svc;
 
 // Type alias for a seeder function (always async)
 type SeederFn = fn() -> Pin<Box<dyn Future<Output = ()>>>;
@@ -20,7 +20,7 @@ macro_rules! async_seeder {
 // List of seeders as (name, function)
 const SEEDERS: &[(&str, SeederFn)] = &[(
     "init_products",
-    async_seeder!(products_svc::seed_products_svc),
+    async_seeder!(product_svc::seed_products_svc),
 )];
 
 #[tokio::main]

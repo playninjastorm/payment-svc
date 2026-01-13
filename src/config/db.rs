@@ -25,7 +25,7 @@ impl Db {
     pub async fn connect(uri: &str, db_name: &str) -> Result<Self, DbError> {
         let mut options = ClientOptions::parse(uri).await?;
 
-        options.app_name = Some(options.app_name.unwrap_or_else(|| "nkstore".to_string()));
+        options.app_name = Some(options.app_name.unwrap_or_else(|| "nkpay".to_string()));
         options.connect_timeout = Some(Duration::from_secs(5));
         options.server_selection_timeout = Some(Duration::from_secs(5));
         options.server_api = Some(ServerApi::builder().version(ServerApiVersion::V1).build());

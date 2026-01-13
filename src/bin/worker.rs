@@ -1,7 +1,7 @@
 use log::info;
 use tokio::time::{Duration, interval};
 
-use nkstore::config::Config;
+use nkpay::config::Config;
 
 #[tokio::main]
 async fn main() {

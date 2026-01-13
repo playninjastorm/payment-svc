@@ -2,8 +2,8 @@ use actix_web::web;
 use actix_web::{App, HttpServer, middleware::Logger};
 use log::info;
 
-use nkstore::config::{Config, db::Db};
-use nkstore::http::v1;
+use nkpay::config::{Config, db::Db};
+use nkpay::http::v1;
 
 #[actix_web::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

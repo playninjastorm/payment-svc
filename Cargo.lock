@@ -1387,7 +1387,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "nkstore"
+name = "nkpay"
 version = "0.1.0"
 dependencies = [
  "actix-web",
