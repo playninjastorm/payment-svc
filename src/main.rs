@@ -12,7 +12,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
 
     let db = Db::connect(&cfg.mongodb_uri, &cfg.mongodb_db_name).await?;
-    info!("Connected to MongoDB");
 
     let addr = format!("0.0.0.0:{}", cfg.port);
     info!("Server running at http://{addr}");

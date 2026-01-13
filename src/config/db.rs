@@ -1,3 +1,4 @@
+use log::info;
 use mongodb::{
     Client, Database,
     bson::doc,
@@ -23,6 +24,8 @@ pub struct Db {
 
 impl Db {
     pub async fn connect(uri: &str, db_name: &str) -> Result<Self, DbError> {
+        env_logger::init();
+
         let mut options = ClientOptions::parse(uri).await?;
 
         options.app_name = Some(options.app_name.unwrap_or_else(|| "nkpay".to_string()));
@@ -34,6 +37,8 @@ impl Db {
         let db = client.database(db_name);
 
         db.run_command(doc! {"ping": 1}).await?;
+
+        info!("Connected to MongoDB");
 
         Ok(Self { client, db })
     }
