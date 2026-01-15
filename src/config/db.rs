@@ -24,8 +24,6 @@ pub struct Db {
 
 impl Db {
     pub async fn connect(uri: &str, db_name: &str) -> Result<Self, DbError> {
-        env_logger::init();
-
         let mut options = ClientOptions::parse(uri).await?;
 
         options.app_name = Some(options.app_name.unwrap_or_else(|| "nkpay".to_string()));

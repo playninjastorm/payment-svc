@@ -1,7 +1,7 @@
 pub mod products;
 
-use actix_web::web;
+use axum::Router;
 
-pub fn scope() -> actix_web::Scope {
-    web::scope("/v1").configure(products::routes)
+pub fn router() -> Router {
+    Router::new().merge(products::router())
 }

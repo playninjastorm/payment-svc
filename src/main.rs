@@ -1,11 +1,10 @@
-use actix_web::web;
-use actix_web::{App, HttpServer, middleware::Logger};
+use axum::{Router, extract::Extension};
 use log::info;
 
 use nkpay::config::{Config, db::Db};
 use nkpay::http::v1;
 
-#[actix_web::main]
+#[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let cfg = Config::load();
 
@@ -13,8 +12,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let db = Db::connect(&cfg.mongodb_uri, &cfg.mongodb_db_name).await?;
 
-    let addr = format!("0.0.0.0:{}", cfg.port);
-    info!("Server running at http://{addr}");
+    let addr = std::net::SocketAddr::from(([0, 0, 0, 0], cfg.port));
+    info!("Server running at http://{}", addr);
 
     let collections = db.database().list_collection_names().await?;
     info!(
@@ -23,17 +22,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         collections.len()
     );
 
-    let db_data = web::Data::new(db);
+    let app = Router::new().nest("/v1", v1::router()).layer(Extension(db));
 
-    HttpServer::new(move || {
-        App::new()
-            .app_data(db_data.clone())
-            .wrap(Logger::default())
-            .service(v1::scope())
-    })
-    .bind(addr)?
-    .run()
-    .await?;
+    // 👇 EXACTAMENTE como la doc oficial
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
 
     Ok(())
 }

@@ -1,6 +1,7 @@
 use std::error::Error;
 use std::{env, future::Future, pin::Pin};
 
+use nkpay::config::Config;
 use nkpay::seeds::product_seeds;
 
 // Type alias for a seeder function (always async) that may return an error
@@ -29,6 +30,10 @@ const SEEDERS: &[(&str, SeederFn)] = &[(
 
 #[tokio::main]
 async fn main() {
+    let _cfg = Config::load();
+
+    env_logger::init();
+
     let args: Vec<String> = env::args().collect();
 
     if args.len() == 1 {

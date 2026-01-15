@@ -1,15 +1,17 @@
-use actix_web::{HttpResponse, web};
+use axum::{
+    Json, Router, extract::Extension, http::StatusCode, response::IntoResponse, routing::get,
+};
 
 use crate::config::db::Db;
 use crate::features::product_svc;
 
-pub fn routes(cfg: &mut web::ServiceConfig) {
-    cfg.route("/products", web::get().to(get_list_products_route));
+pub fn router() -> Router {
+    Router::new().route("/products", get(get_list_products_route))
 }
 
-async fn get_list_products_route(db: web::Data<Db>) -> HttpResponse {
-    match product_svc::list_products_svc(db.get_ref()).await {
-        Ok(items) => HttpResponse::Ok().json(items),
-        Err(e) => HttpResponse::InternalServerError().body(e.to_string()),
+async fn get_list_products_route(Extension(db): Extension<Db>) -> impl IntoResponse {
+    match product_svc::list_products_svc(&db).await {
+        Ok(items) => (StatusCode::OK, Json(items)).into_response(),
+        Err(e) => (StatusCode::INTERNAL_SERVER_ERROR, e.to_string()).into_response(),
     }
 }
