@@ -9,6 +9,7 @@ axum = "0.8.8"
 tokio = { version = "1.49.0", features = ["full"] }
 serde = { version = "1.0.228", features = ["derive"] }
 mongodb = "3.4.1"
+serde_json = "1.0.149"
 futures-util = "0.3.31"
 thiserror = "2.0.17"
 log = "0.4.29"
