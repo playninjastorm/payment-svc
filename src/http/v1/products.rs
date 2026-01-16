@@ -1,12 +1,16 @@
 use axum::{
-    Json, Router, extract::Extension, http::StatusCode, response::IntoResponse, routing::get,
+    Json, Router, extract::Extension, http::StatusCode, middleware::from_fn,
+    response::IntoResponse, routing::get,
 };
 
 use crate::config::db::Db;
 use crate::features::product_svc;
+use crate::middlewares::require_api_key;
 
 pub fn router() -> Router {
-    Router::new().route("/products", get(get_list_products_route))
+    Router::new()
+        .route("/products", get(get_list_products_route))
+        .route_layer(from_fn(require_api_key))
 }
 
 async fn get_list_products_route(Extension(db): Extension<Db>) -> impl IntoResponse {
