@@ -14,8 +14,6 @@ pub async fn require_api_key(req: Request<Body>, next: Next) -> impl IntoRespons
         .and_then(|v| v.to_str().ok())
         .unwrap_or("");
 
-    println!("Received: {}", header_val);
-
     let cfg: Config = Config::load();
 
     if header_val == cfg.api_key {

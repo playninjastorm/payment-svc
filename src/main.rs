@@ -2,6 +2,7 @@ use axum::{Router, extract::Extension};
 use log::info;
 
 use nkpay::config::{Config, db::Db};
+use nkpay::http::health;
 use nkpay::http::v1;
 
 #[tokio::main]
@@ -22,7 +23,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         collections.len()
     );
 
-    let app = Router::new().nest("/v1", v1::router()).layer(Extension(db));
+    let app = Router::new()
+        .nest("/health", health::router())
+        .nest("/v1", v1::router())
+        .layer(Extension(db));
 
     // 👇 EXACTAMENTE como la doc oficial
     let listener = tokio::net::TcpListener::bind(addr).await?;
