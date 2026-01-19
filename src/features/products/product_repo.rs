@@ -7,7 +7,7 @@ use mongodb::{
 use crate::config::db::Db;
 use crate::features::product_models::Product;
 
-const COLLECTION_NAME: &str = "shopProducts";
+const COLLECTION_NAME: &str = "paymentProducts";
 
 /// Recupera todos los `Product` de la colección.
 pub async fn get_all_products_db(db: &Db) -> Result<Vec<Product>, Error> {
