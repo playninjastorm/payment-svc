@@ -1,6 +1,6 @@
 use futures_util::TryStreamExt;
 use mongodb::{
-    bson::{Bson, doc},
+    bson::{Bson, DateTime, doc},
     error::Error,
 };
 
@@ -28,8 +28,14 @@ pub async fn insert_products_db(
 ) -> Result<Vec<Product>, Error> {
     let collection = db.database().collection::<Product>(COLLECTION_NAME);
 
-    // Insertamos una copia para que el driver pueda consumir los documentos,
-    // y mantenemos `products` para actualizar los `id` resultantes.
+    // Establecemos timestamps antes de insertar y creamos la copia
+    // que consumirá el driver. Mantener `products` para actualizar los `id`.
+    let now = DateTime::now();
+    for p in products.iter_mut() {
+        p.created_at = Some(now.clone());
+        p.updated_at = Some(now.clone());
+    }
+
     let to_insert = products.clone();
 
     let result = collection.insert_many(to_insert).await?;
