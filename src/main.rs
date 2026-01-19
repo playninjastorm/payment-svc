@@ -4,6 +4,7 @@ use axum::{extract::Extension, routing::get};
 use log::info;
 
 use nkpay::config::{Config, db::Db};
+use nkpay::http::docs;
 use nkpay::http::health;
 use nkpay::http::v1;
 
@@ -37,6 +38,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let app = ApiRouter::new()
         .nest("/health", health::router())
+        .nest("/docs", docs::router())
         .nest("/v1", v1::router())
         .route("/openapi.json", get(serve_api))
         .layer(Extension(db));
