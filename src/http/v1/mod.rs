@@ -1,7 +1,7 @@
 pub mod products;
 
-use axum::Router;
+use aide::axum::ApiRouter;
 
-pub fn router() -> Router {
-    Router::new().merge(products::router())
+pub fn router() -> ApiRouter {
+    ApiRouter::new().merge(products::router())
 }

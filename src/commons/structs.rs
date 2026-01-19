@@ -1,9 +1,11 @@
+use schemars::JsonSchema;
 use serde::Serialize;
 use serde_json::Value;
 
 /// Generic API response usable across the service.
 /// - `TData` and `TErr` default to `serde_json::Value` so callers can omit concrete types.
-#[derive(Serialize)]
+#[derive(Serialize, JsonSchema)]
+#[schemars(bound = "TData: JsonSchema, TErr: JsonSchema")]
 pub struct ApiResponse<TData = Value, TErr = Value>
 where
     TData: Serialize,

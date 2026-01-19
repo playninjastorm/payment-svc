@@ -17,3 +17,5 @@ env_logger = "0.11.8"
 dotenvy = "0.15.7"
 tower = "0.4"
 tower-http = "0.4"
+aide = { version = "0.15.1", features = ["axum", "axum-json", "swagger"] }
+schemars = "0.9"
