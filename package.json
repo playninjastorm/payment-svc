@@ -8,6 +8,7 @@
     "worker": "bun run src/worker.ts"
   },
   "dependencies": {
+    "@elysiajs/openapi": "^1.4.14",
     "elysia": "1.4.21"
   },
   "devDependencies": {
