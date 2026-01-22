@@ -18,6 +18,7 @@ pub fn router() -> ApiRouter {
 async fn get_list_promotions_route(
     Extension(db): Extension<Db>,
 ) -> Json<ApiResponse<Vec<PromotionResponse>, Value>> {
+    // TODO: Filtrar por state
     match promotions_svc::list_promotions_svc(&db).await {
         Ok(items) => {
             let values: Vec<PromotionResponse> =

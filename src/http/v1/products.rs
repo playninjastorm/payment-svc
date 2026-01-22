@@ -20,7 +20,6 @@ async fn get_list_products_route(
 ) -> Json<ApiResponse<Vec<ProductResponse>, Value>> {
     match product_svc::list_products_svc(&db).await {
         Ok(items) => {
-            // Map domain `Product` into `ProductResponse` DTO to produce a friendly JSON shape.
             let values: Vec<ProductResponse> =
                 items.into_iter().map(ProductResponse::from).collect();
 
