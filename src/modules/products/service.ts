@@ -1,45 +1,39 @@
 import { status } from "elysia";
-import type { Document } from "mongodb";
-import { connectToDatabase } from "@/core/db";
+
+import ProductsRepository from "@/modules/products/repository";
+import { Product } from "@/modules/products/model";
 
 export abstract class ProductsSvc {
-  private static collection = "paymentsProducts";
-  /**
-   * List products from the `paymentsProducts` collection.
-   *
-   * - `filter` Mongo query filter.
-   * - `limit` capped to 1000 to avoid huge responses.
-   * - `skip` for pagination offset.
-   * - `sort` sort specification.
-   */
-  static async list({
-    filter = {},
-    limit = 100,
-    skip = 0,
-    sort = {},
-  }: {
-    filter?: Record<string, any>;
-    limit?: number;
-    skip?: number;
-    sort?: Record<string, 1 | -1>;
-  } = {}): Promise<Document[]> {
-    const clampedLimit = Math.min(Math.max(0, limit), 1000);
-
+  static async list(
+    params: {
+      filter?: Record<string, any>;
+      limit?: number;
+      skip?: number;
+      sort?: Record<string, 1 | -1>;
+    } = {},
+  ) {
     try {
-      const db = await connectToDatabase();
+      const items = await ProductsRepository.list(params);
 
-      const cursor = db
-        .collection(this.collection)
-        .find(filter)
-        .sort(sort)
-        .skip(skip)
-        .limit(clampedLimit);
+      // TODO: Convertir Document en Model de Elisia
 
-      const items = await cursor.toArray();
       return items;
     } catch (err: any) {
       throw status(500, {
         error: "Failed to fetch products",
+        message: err?.message ?? String(err),
+      });
+    }
+  }
+
+  static async createBulk(products: Product[]) {
+    try {
+      const items = await ProductsRepository.createBulk(products);
+
+      return items;
+    } catch (err: any) {
+      throw status(500, {
+        error: "Failed to create products",
         message: err?.message ?? String(err),
       });
     }

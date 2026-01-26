@@ -4,6 +4,9 @@ import { Elysia } from "elysia";
 import { ENV } from "@/config/env";
 import { productsRouter } from "@/modules/products/router";
 import { promotionsRouter } from "@/modules/promotions/router";
+import { connectDb } from "@/core/db";
+
+await connectDb();
 
 const app = new Elysia()
   .use(

@@ -1,8 +1,8 @@
-import { Schema } from "mongoose";
+import { Schema, InferSchemaType, model } from "mongoose";
 
 import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db.utils";
 
-export const productPlatormStripeSchema = new Schema(
+const productPlatormStripeSchema = new Schema(
   {
     productId: {
       type: String,
@@ -18,7 +18,7 @@ export const productPlatormStripeSchema = new Schema(
   { _id: false },
 );
 
-export const productPlatformPaypalSchema = new Schema(
+const productPlatformPaypalSchema = new Schema(
   {
     product_id: {
       type: String,
@@ -29,7 +29,7 @@ export const productPlatformPaypalSchema = new Schema(
   { _id: false },
 );
 
-export const productPlatformXsollaSchema = new Schema(
+const productPlatformXsollaSchema = new Schema(
   {
     sku: {
       type: String,
@@ -40,7 +40,7 @@ export const productPlatformXsollaSchema = new Schema(
   { _id: false },
 );
 
-export const productPlatformsSchema = new Schema(
+const productPlatformsSchema = new Schema(
   {
     stripe: {
       type: productPlatormStripeSchema,
@@ -58,7 +58,7 @@ export const productPlatformsSchema = new Schema(
   { _id: false },
 );
 
-export const productSchema = new Schema(
+const productSchema = new Schema(
   {
     id: {
       type: Schema.ObjectId,
@@ -85,4 +85,11 @@ export const productSchema = new Schema(
     },
   },
   DEFAULT_OPTIONS_SCHEMA,
+);
+
+export type Product = InferSchemaType<typeof productSchema>;
+export const ProductModel = model<Product>(
+  "Products", // Name
+  productSchema, // Schema
+  "paymentProducts", // Collection name
 );
