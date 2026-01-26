@@ -1,7 +1,7 @@
 import { status } from "elysia";
 
+import { ProductDTO } from "@/modules/products/dto";
 import ProductsRepository from "@/modules/products/repository";
-import { Product } from "@/modules/products/model";
 
 export abstract class ProductsSvc {
   static async list(
@@ -13,9 +13,9 @@ export abstract class ProductsSvc {
     } = {},
   ) {
     try {
-      const items = await ProductsRepository.list(params);
+      const raw = await ProductsRepository.list(params);
 
-      // TODO: Convertir Document en Model de Elisia
+      const items: any = raw.map((item) => ({ ...item }));
 
       return items;
     } catch (err: any) {
@@ -26,9 +26,11 @@ export abstract class ProductsSvc {
     }
   }
 
-  static async createBulk(products: Product[]) {
+  static async createBulk(products: ProductDTO.Create[]) {
     try {
-      const items = await ProductsRepository.createBulk(products);
+      const raw = await ProductsRepository.createBulk(products);
+
+      const items: any = raw.map((item) => ({ ...item }));
 
       return items;
     } catch (err: any) {

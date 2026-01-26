@@ -58,6 +58,10 @@ const productPlatformsSchema = new Schema(
 
 const productSchema = new Schema(
   {
+    id: {
+      // _id: ObjectId
+      type: String,
+    },
     name: {
       type: String,
       required: true,

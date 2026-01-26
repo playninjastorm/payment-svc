@@ -5,7 +5,7 @@ import ProductsRepository from "@/modules/products/repository";
 const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
   {
     name: "Token",
-    sku: "token_30000",
+    sku: "TOKEN_30000",
     basePrice: 49.99,
     active: true,
     platforms: {
@@ -17,13 +17,13 @@ const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
         productId: "PROD-30000",
       },
       xsolla: {
-        sku: "token_30000",
+        sku: "TOKEN_30000",
       },
     },
   },
   {
     name: "Token",
-    sku: "token_13500",
+    sku: "TOKEN_13500",
     basePrice: 24.99,
     active: true,
     platforms: {
@@ -35,13 +35,13 @@ const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
         productId: "PROD-13500",
       },
       xsolla: {
-        sku: "token_13500",
+        sku: "TOKEN_13500",
       },
     },
   },
   {
     name: "Token",
-    sku: "token_5000",
+    sku: "TOKEN_5000",
     basePrice: 9.99,
     active: true,
     platforms: {
@@ -53,13 +53,13 @@ const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
         productId: "PROD-5000",
       },
       xsolla: {
-        sku: "token_5000",
+        sku: "TOKEN_5000",
       },
     },
   },
   {
     name: "Token",
-    sku: "token_2000",
+    sku: "TOKEN_2000",
     basePrice: 4.99,
     active: true,
     platforms: {
@@ -71,13 +71,13 @@ const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
         productId: "PROD-2000",
       },
       xsolla: {
-        sku: "token_2000",
+        sku: "TOKEN_2000",
       },
     },
   },
   {
     name: "Token",
-    sku: "token_1000",
+    sku: "TOKEN_1000",
     basePrice: 2.99,
     active: true,
     platforms: {
@@ -89,13 +89,13 @@ const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
         productId: "PROD-1000",
       },
       xsolla: {
-        sku: "token_1000",
+        sku: "TOKEN_1000",
       },
     },
   },
   {
     name: "Token",
-    sku: "token_500",
+    sku: "TOKEN_500",
     basePrice: 2.99,
     active: true,
     platforms: {
