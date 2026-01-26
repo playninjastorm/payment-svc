@@ -97,7 +97,15 @@ async function main() {
     process.exit(1);
   }
 
-  await SEEDERS[name]();
+  try {
+    console.log(`✅ Running ${name} seeder`);
+    await SEEDERS[name]();
+    console.log(`✅ Seeder ${name} completed successfully.`);
+    process.exit(0);
+  } catch (error) {
+    console.error(`❌ Failed to run seeder ${name}:`, error);
+    process.exit(1);
+  }
 }
 
 await main();

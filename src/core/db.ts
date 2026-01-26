@@ -22,6 +22,7 @@ const opts: ConnectOptions = {
 
 export const connectDb = async () => {
   try {
+    // TODO: Create singleton connection
     const res = await connect(ENV.MONGODB_URI, opts);
 
     console.log("💿 MongoDB connection successful:", res.connection.name);

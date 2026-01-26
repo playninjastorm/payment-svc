@@ -1,3 +1,4 @@
+import { ProductDTO } from "@/modules/products/dto";
 import { Product, ProductModel } from "@/modules/products/model";
 
 export abstract class ProductsRepository {
@@ -22,7 +23,7 @@ export abstract class ProductsRepository {
     return cursor;
   }
 
-  static async createBulk(products: Product[]): Promise<Product[]> {
+  static async createBulk(products: ProductDTO.Create[]): Promise<Product[]> {
     return await ProductModel.insertMany(products, { ordered: false });
   }
 }

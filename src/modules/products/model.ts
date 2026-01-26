@@ -20,10 +20,9 @@ const productPlatormStripeSchema = new Schema(
 
 const productPlatformPaypalSchema = new Schema(
   {
-    product_id: {
+    productId: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { _id: false },
@@ -34,7 +33,6 @@ const productPlatformXsollaSchema = new Schema(
     sku: {
       type: String,
       required: true,
-      unique: true,
     },
   },
   { _id: false },
@@ -60,15 +58,13 @@ const productPlatformsSchema = new Schema(
 
 const productSchema = new Schema(
   {
-    id: {
-      type: Schema.ObjectId,
+    name: {
+      type: String,
       required: true,
-      unique: true,
     },
     sku: {
       type: String,
       required: true,
-      unique: true,
     },
     basePrice: {
       type: Number,
@@ -81,7 +77,7 @@ const productSchema = new Schema(
     },
     platforms: {
       type: productPlatformsSchema,
-      required: true,
+      required: false,
     },
   },
   DEFAULT_OPTIONS_SCHEMA,
