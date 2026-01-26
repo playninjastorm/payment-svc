@@ -15,12 +15,18 @@ const app = new Elysia()
       enabled: ENV.ENABLE_DOCS,
     }),
   )
-  .get("/", () => {
-    return {
-      code: 200,
-      message: "Ninja Kaizen Payment Service",
-    };
-  })
+  .get(
+    "/",
+    () => {
+      return {
+        code: 200,
+        message: "Ninja Kaizen Payment Service",
+      };
+    },
+    {
+      tags: ["Health Check"],
+    },
+  )
   .use(productsRouter)
   .use(promotionsRouter)
   .listen(ENV.PORT);

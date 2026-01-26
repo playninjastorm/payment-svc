@@ -4,16 +4,9 @@ import { ProductDTO } from "@/modules/products/dto";
 import ProductsRepository from "@/modules/products/repository";
 
 export abstract class ProductsSvc {
-  static async list(
-    params: {
-      filter?: Record<string, any>;
-      limit?: number;
-      skip?: number;
-      sort?: Record<string, 1 | -1>;
-    } = {},
-  ) {
+  static async list() {
     try {
-      const raw = await ProductsRepository.list(params);
+      const raw = await ProductsRepository.list();
 
       const items: any = raw.map((item) => ({ ...item }));
 

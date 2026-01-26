@@ -4,8 +4,11 @@ import { CommonDTO } from "@/commons/dto";
 import { ProductsSvc } from "@/modules/products/service";
 import { ProductDTO } from "@/modules/products/dto";
 
-export const productsRouter = new Elysia({ prefix: "/v1/products" }).get(
-  "/",
+export const productsRouter = new Elysia({
+  prefix: "/v1/products",
+  tags: ["Products"],
+}).get(
+  "",
   async () => {
     const data = await ProductsSvc.list();
 
