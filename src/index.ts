@@ -1,10 +1,14 @@
 import { openapi } from "@elysiajs/openapi";
 import { Elysia } from "elysia";
+import { opentelemetry } from "@elysiajs/opentelemetry";
+import { serverTiming } from "@elysiajs/server-timing";
+import { cron } from "@elysiajs/cron";
 
 import { ENV } from "@/config/env";
 import { productsRouter } from "@/modules/products/router";
 import { promotionsRouter } from "@/modules/promotions/router";
 import { connectDb } from "@/core/db";
+import { requestID } from "@/utils/requestId";
 
 await connectDb();
 
@@ -13,6 +17,18 @@ const app = new Elysia()
     openapi({
       path: "/docs",
       enabled: ENV.ENABLE_DOCS,
+    }),
+  )
+  .use(opentelemetry())
+  .use(serverTiming())
+  .use(requestID())
+  .use(
+    cron({
+      name: "heartbeat",
+      pattern: "0 * * * * *",
+      run() {
+        console.log("Check promotions: ", new Date().toISOString());
+      },
     }),
   )
   .get(
