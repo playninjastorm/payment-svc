@@ -8,7 +8,8 @@ import { ENV } from "@/config/env";
 import { productsRouter } from "@/modules/products/router";
 import { promotionsRouter } from "@/modules/promotions/router";
 import { connectDb } from "@/core/db";
-import { requestID } from "@/utils/requestId";
+import { requestID } from "@/plugins/requestId";
+import { requestLogger } from "@/plugins/requestLogger";
 
 await connectDb();
 
@@ -22,6 +23,7 @@ const app = new Elysia()
   .use(opentelemetry())
   .use(serverTiming())
   .use(requestID())
+  .use(requestLogger())
   .use(
     cron({
       name: "heartbeat",

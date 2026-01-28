@@ -5,6 +5,7 @@ export const promotionsRouter = new Elysia({
   tags: ["Promotions"],
 })
   .get("", () => {
+    // TODO: TEST ERROR 500 HANDLER
     return {
       code: 200,
       message: "Promotions route is working",

@@ -15,7 +15,7 @@ export const requestID = ({
     .on("request", ({ set, request: { headers } }) => {
       set.headers[header] = headers.get(header) || uuid();
     })
-    .derive(({ request, set }) => {
+    .derive(({ set }) => {
       return {
         requestID: set.headers[header],
       };
