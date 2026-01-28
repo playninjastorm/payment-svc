@@ -1,6 +1,7 @@
 import { connect, ConnectOptions } from "mongoose";
 
 import { ENV } from "@/config/env";
+import { logger } from "@/core/logger";
 
 const opts: ConnectOptions = {
   maxPoolSize: parseInt(
@@ -25,8 +26,11 @@ export const connectDb = async () => {
     // TODO: Create singleton connection
     const res = await connect(ENV.MONGODB_URI, opts);
 
-    console.log("💿 MongoDB connection successful:", res.connection.name);
-  } catch (err) {
-    console.error("❌ Failed to connect MongoDB:", err);
+    logger.info(
+      { databaseName: res.connection.name },
+      "💿 MongoDB connection successful",
+    );
+  } catch (error) {
+    logger.error({ error }, "❌ Failed to connect MongoDB:");
   }
 };

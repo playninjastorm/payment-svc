@@ -10,6 +10,7 @@ import { promotionsRouter } from "@/modules/promotions/router";
 import { connectDb } from "@/core/db";
 import { requestID } from "@/plugins/requestId";
 import { requestLogger } from "@/plugins/requestLogger";
+import { logger } from "@/core/logger";
 
 await connectDb();
 
@@ -26,10 +27,13 @@ const app = new Elysia()
   .use(requestLogger())
   .use(
     cron({
-      name: "heartbeat",
+      name: "promotions-check-scheduled ",
       pattern: "0 * * * * *",
       run() {
-        console.log("Check promotions: ", new Date().toISOString());
+        logger.info(
+          { timestamp: new Date().toISOString() },
+          "[Cronjob] Check promotions",
+        );
       },
     }),
   )
@@ -49,6 +53,6 @@ const app = new Elysia()
   .use(promotionsRouter)
   .listen(ENV.PORT);
 
-console.log(
+logger.info(
   `🚀 Server is running at ${app.server?.hostname}:${app.server?.port}`,
 );

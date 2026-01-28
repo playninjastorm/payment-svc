@@ -1,4 +1,5 @@
 import { connectDb } from "@/core/db";
+import { logger } from "@/core/logger";
 import { type ProductDTO } from "@/modules/products/dto";
 import ProductsRepository from "@/modules/products/repository";
 
@@ -112,5 +113,5 @@ export async function initProductsSeed() {
 
   const products = await ProductsRepository.createBulk(PRODUCTS_SEED_DATA);
 
-  console.log(`Seeded: ${products.flatMap((p) => p.sku).join(", ")}.`);
+  logger.info(`Seeded: ${products.flatMap((p) => p.sku).join(", ")}.`);
 }

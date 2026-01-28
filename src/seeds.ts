@@ -1,4 +1,5 @@
 import { SEEDERS, hasSeeder, listSeeders } from "@/seeders";
+import { logger } from "@/core/logger";
 
 // Parse flags like --name=value, --name value, -n=value, -n value
 function getFlagValue(flags: string[]): string | undefined {
@@ -30,7 +31,7 @@ function hasFlag(flag: string): boolean {
 
 function printList() {
   const seeds = listSeeders();
-  console.log(seeds.map((s) => `- ${s}`).join("\n"));
+  logger.info(seeds.map((s) => `- ${s}`).join("\n"));
 }
 
 function printHelp(extraError?: string) {
@@ -55,9 +56,9 @@ ${available}
 `;
 
   if (extraError) {
-    console.error(extraError.trimEnd() + "\n");
+    logger.error(extraError.trimEnd() + "\n");
   }
-  console.log(header);
+  logger.info(header);
 }
 
 async function main() {
@@ -98,12 +99,12 @@ async function main() {
   }
 
   try {
-    console.log(`✅ Running ${name} seeder`);
+    logger.info(`✅ Running ${name} seeder`);
     await SEEDERS[name]();
-    console.log(`✅ Seeder ${name} completed successfully.`);
+    logger.info(`✅ Seeder ${name} completed successfully.`);
     process.exit(0);
   } catch (error) {
-    console.error(`❌ Failed to run seeder ${name}:`, error);
+    logger.error({ error }, `❌ Failed to run seeder ${name}`);
     process.exit(1);
   }
 }
