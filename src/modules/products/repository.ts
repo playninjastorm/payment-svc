@@ -12,7 +12,7 @@ export abstract class ProductsRepository {
     limit?: number;
     skip?: number;
     sort?: Record<string, 1 | -1>;
-  } = {}): Promise<Product[]> {
+  } = {}) {
     const clampedLimit = Math.min(Math.max(0, limit), 1000);
 
     const cursor = await ProductModel.find(filter)

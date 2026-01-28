@@ -1,6 +1,7 @@
 import { Schema, InferSchemaType, model } from "mongoose";
 
 import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db.utils";
+import { ProductDTO } from "@/modules/products/dto";
 
 const productPlatormStripeSchema = new Schema(
   {
@@ -56,12 +57,8 @@ const productPlatformsSchema = new Schema(
   { _id: false },
 );
 
-const productSchema = new Schema(
+const productSchema = new Schema<ProductDTO.Details>(
   {
-    id: {
-      // _id: ObjectId
-      type: String,
-    },
     name: {
       type: String,
       required: true,
@@ -81,7 +78,7 @@ const productSchema = new Schema(
     },
     platforms: {
       type: productPlatformsSchema,
-      required: false,
+      required: true,
     },
   },
   DEFAULT_OPTIONS_SCHEMA,

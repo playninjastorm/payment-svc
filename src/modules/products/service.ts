@@ -6,9 +6,7 @@ import ProductsRepository from "@/modules/products/repository";
 export abstract class ProductsSvc {
   static async list() {
     try {
-      const raw = await ProductsRepository.list();
-
-      const items: any = raw.map((item) => ({ ...item }));
+      const items = await ProductsRepository.list();
 
       return items;
     } catch (err: any) {
