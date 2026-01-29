@@ -137,8 +137,8 @@ Cuando llega `endsAt`:
     "startsAt": "2025-08-14T00:00:00Z",
     "endsAt": "2025-08-21T00:00:00Z"
   },
-  "state": "scheduled",
-  "scope": { "mode": "skus" },
+  "state": "SCHEDULED",
+  "scope": { "mode": "SKUS" },
   "lines": [
     {
       "sku": "TOKENS_30000",
@@ -173,11 +173,11 @@ Cuando llega `endsAt`:
 
 | Estado       | Descripción                                |
 | ------------ | ------------------------------------------ |
-| `scheduled`  | Promoción creada, esperando activación     |
-| `activating` | Creando o actualizando precios en tiendas  |
-| `active`     | En curso, visible en todas las plataformas |
-| `ending`     | Revirtiendo cambios                        |
-| `ended`      | Finalizada y restaurada al precio base     |
+| `SCHEDULED`  | Promoción creada, esperando activación     |
+| `ACTIVATING` | Creando o actualizando precios en tiendas  |
+| `ACTIVE`     | En curso, visible en todas las plataformas |
+| `ENDING`     | Revirtiendo cambios                        |
+| `ENDED`      | Finalizada y restaurada al precio base     |
 
 ---
 
@@ -195,15 +195,15 @@ Cuando llega `endsAt`:
 
 ### Worker — Activación
 
-1. Busca promociones `state=scheduled` y `startsAt ≤ now`.
+1. Busca promociones `state=SCHEDULED` y `startsAt ≤ now`.
 2. Sincroniza precios con cada plataforma.
-3. Guarda IDs y marca `active`.
+3. Guarda IDs y marca `ACTIVE`.
 
 ### Worker — Finalización
 
-1. Busca `state=active` y `endsAt ≤ now`.
+1. Busca `state=ACTIVE` y `endsAt ≤ now`.
 2. Restaura precios base en todas las plataformas.
-3. Marca `ended`.
+3. Marca `ENDED`.
 
 ⏱ Frecuencia: cada 5 minutos
 🕒 Tiempos: UTC

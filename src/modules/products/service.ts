@@ -1,6 +1,6 @@
 import { status } from "elysia";
 
-import { ProductDTO } from "@/modules/products/dto";
+import { ProductModel } from "@/modules/products/model";
 import ProductsRepository from "@/modules/products/repository";
 
 export abstract class ProductsSvc {
@@ -17,7 +17,7 @@ export abstract class ProductsSvc {
     }
   }
 
-  static async createBulk(products: ProductDTO.Create[]) {
+  static async createBulk(products: ProductModel.Create[]) {
     try {
       const raw = await ProductsRepository.createBulk(products);
 

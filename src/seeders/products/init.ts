@@ -1,9 +1,9 @@
 import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
-import { type ProductDTO } from "@/modules/products/dto";
+import { type ProductModel } from "@/modules/products/model";
 import ProductsRepository from "@/modules/products/repository";
 
-const PRODUCTS_SEED_DATA: ProductDTO.Create[] = [
+const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: "TOKEN_30000",

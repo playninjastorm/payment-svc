@@ -1,92 +1,114 @@
-import { Schema, InferSchemaType, model } from "mongoose";
+import { t } from "elysia";
 
-import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
-import { ProductDTO } from "@/modules/products/dto";
+export namespace ProductModel {
+  export const PlatformStripe = t.Object({
+    productId: t.String({
+      title: "Stripe Product ID",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["price_1QMLyvFWwrZP60SHXerlkn51"],
+    }),
+    defaultPriceId: t.String({
+      title: "Stripe Default Price ID",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["price_1QMLyyFWwrZP60SHbsqvLpKa"],
+    }),
+  });
+  export type PlatformStripe = typeof PlatformStripe.static;
 
-const productPlatormStripeSchema = new Schema(
-  {
-    productId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    defaultPriceId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-  },
-  { _id: false },
-);
+  export const PlatformPaypal = t.Object({
+    productId: t.String({
+      title: "PayPal Product ID",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["PROD-30000"],
+    }),
+  });
+  export type PlatformPaypal = typeof PlatformPaypal.static;
 
-const productPlatformPaypalSchema = new Schema(
-  {
-    productId: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false },
-);
+  export const PlatformXsolla = t.Object({
+    sku: t.String({
+      title: "Xsolla SKU",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["TOKEN_30000"],
+    }),
+  });
+  export type PlatformXsolla = typeof PlatformXsolla.static;
 
-const productPlatformXsollaSchema = new Schema(
-  {
-    sku: {
-      type: String,
-      required: true,
-    },
-  },
-  { _id: false },
-);
+  export const Platforms = t.Object({
+    stripe: t.Optional(t.Union([PlatformStripe, t.Null()])),
+    paypal: t.Optional(t.Union([PlatformPaypal, t.Null()])),
+    xsolla: t.Optional(t.Union([PlatformXsolla, t.Null()])),
+  });
+  export type Platforms = typeof Platforms.static;
 
-const productPlatformsSchema = new Schema(
-  {
-    stripe: {
-      type: productPlatormStripeSchema,
-      required: false,
-    },
-    paypal: {
-      type: productPlatformPaypalSchema,
-      required: false,
-    },
-    xsolla: {
-      type: productPlatformXsollaSchema,
-      required: false,
-    },
-  },
-  { _id: false },
-);
-
-const productSchema = new Schema<ProductDTO.Details>(
-  {
-    name: {
-      type: String,
-      required: true,
-    },
-    sku: {
-      type: String,
-      required: true,
-    },
-    basePrice: {
-      type: Number,
-      required: true,
-    },
-    active: {
-      type: Boolean,
-      required: true,
+  export const Details = t.Object({
+    id: t.String({
+      title: "Product ID (MongoDB ObjectId as string)",
+      examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
+    }),
+    name: t.String({
+      title: "Product Name",
+      minLength: 2,
+      maxLength: 100,
+      examples: ["Token", "Emblem"],
+    }),
+    sku: t.String({
+      title: "Product SKU",
+      minLength: 2,
+      maxLength: 255,
+      examples: ["TOKEN_30000", "TOKEN_13500"],
+    }),
+    basePrice: t.Number({
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
+    active: t.Boolean({
+      title: "Is Active",
       default: true,
-    },
-    platforms: {
-      type: productPlatformsSchema,
-      required: true,
-    },
-  },
-  DEFAULT_OPTIONS_SCHEMA,
-);
+    }),
+    platforms: Platforms,
+    createdAt: t.Union(
+      [t.String({ title: "Created At", format: "date-time" }), t.Date()],
+      {
+        title: "Creation Timestamp",
+        default: new Date().toISOString(),
+      },
+    ),
+    updatedAt: t.Union(
+      [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
+      {
+        title: "Update Timestamp",
+        default: new Date().toISOString(),
+      },
+    ),
+  });
+  export type Details = typeof Details.static;
 
-export type Product = InferSchemaType<typeof productSchema>;
-export const ProductModel = model<Product>(
-  "Products", // Name
-  productSchema, // Schema
-  "paymentProducts", // Collection name
-);
+  export const Create = t.Object({
+    name: t.String({
+      title: "Product Name",
+      minLength: 2,
+      maxLength: 100,
+      examples: ["Token", "Emblem"],
+    }),
+    sku: t.String({
+      title: "Product SKU",
+      minLength: 2,
+      maxLength: 255,
+      examples: ["TOKEN_30000", "TOKEN_13500"],
+    }),
+    basePrice: t.Number({
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
+    active: t.Boolean({
+      title: "Is Active",
+      default: true,
+    }),
+    platforms: Platforms,
+  });
+  export type Create = typeof Create.static;
+}

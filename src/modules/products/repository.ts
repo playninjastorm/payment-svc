@@ -1,5 +1,5 @@
-import { ProductDTO } from "@/modules/products/dto";
-import { Product, ProductModel } from "@/modules/products/model";
+import { ProductModel } from "@/modules/products/model";
+import { Product, ProductDB } from "@/modules/products/schema";
 
 export abstract class ProductsRepository {
   static async list({
@@ -15,7 +15,7 @@ export abstract class ProductsRepository {
   } = {}) {
     const clampedLimit = Math.min(Math.max(0, limit), 1000);
 
-    const cursor = await ProductModel.find(filter)
+    const cursor = await ProductDB.find(filter)
       .sort(sort)
       .skip(skip)
       .limit(clampedLimit);
@@ -23,8 +23,8 @@ export abstract class ProductsRepository {
     return cursor;
   }
 
-  static async createBulk(products: ProductDTO.Create[]): Promise<Product[]> {
-    return await ProductModel.insertMany(products, { ordered: false });
+  static async createBulk(products: ProductModel.Create[]): Promise<Product[]> {
+    return await ProductDB.insertMany(products, { ordered: false });
   }
 }
 
