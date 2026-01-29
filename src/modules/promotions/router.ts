@@ -20,13 +20,14 @@ export const promotionsRouter = new Elysia({
             limit: 10,
             totalItems: 0,
             totalPages: 0,
-            hasNextPage: false,
+            hasNextPage: true,
             hasPreviousPage: false,
           },
         },
       };
     },
     {
+      query: CommonDTO.PaginationQuery,
       response: {
         200: CommonDTO.ResponseDataListPagination(PromotionModel.Details),
         // TODO: 422

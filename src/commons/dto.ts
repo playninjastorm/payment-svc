@@ -93,7 +93,6 @@ export namespace CommonDTO {
           }),
           totalPages: t.Number({
             title: "Total Number of Pages",
-            minimum: 1,
             default: 0,
             examples: [12],
           }),

@@ -1,16 +1,17 @@
+import { cron } from "@elysiajs/cron";
 import { openapi } from "@elysiajs/openapi";
-import { Elysia } from "elysia";
 import { opentelemetry } from "@elysiajs/opentelemetry";
 import { serverTiming } from "@elysiajs/server-timing";
-import { cron } from "@elysiajs/cron";
+import { Elysia } from "elysia";
 
 import { ENV } from "@/config/env";
+import { connectDb } from "@/core/db";
+import { logger } from "@/core/logger";
 import { productsRouter } from "@/modules/products/router";
 import { promotionsRouter } from "@/modules/promotions/router";
-import { connectDb } from "@/core/db";
+import { errorHandler } from "@/plugins/errorHandler";
 import { requestID } from "@/plugins/requestId";
 import { requestLogger } from "@/plugins/requestLogger";
-import { logger } from "@/core/logger";
 
 await connectDb();
 
@@ -25,6 +26,7 @@ const app = new Elysia()
   .use(serverTiming())
   .use(requestID())
   .use(requestLogger())
+  .use(errorHandler())
   .use(
     cron({
       name: "promotions-check-scheduled ",
@@ -37,6 +39,7 @@ const app = new Elysia()
       },
     }),
   )
+  .use(errorHandler())
   .get(
     "/",
     () => {
