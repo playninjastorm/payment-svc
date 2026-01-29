@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@elysiajs/cron": "1.4.1",
-    "@elysiajs/openapi": "^1.4.14",
+    "@elysiajs/openapi": "1.4.14",
     "@elysiajs/opentelemetry": "1.4.10",
     "@elysiajs/server-timing": "1.4.0",
     "elysia": "1.4.21",
-    "mongoose": "^9.1.5",
+    "mongoose": "9.1.5",
     "pino": "10.3.0",
     "pino-pretty": "13.1.3"
   },
