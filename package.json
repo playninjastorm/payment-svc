@@ -1,5 +1,5 @@
 {
-  "name": "store",
+  "name": "@ninjakaizen/payments-svc",
   "version": "0.1.0",
   "module": "src/index.js",
   "scripts": {
