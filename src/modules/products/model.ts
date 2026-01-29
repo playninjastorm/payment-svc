@@ -1,6 +1,6 @@
 import { Schema, InferSchemaType, model } from "mongoose";
 
-import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db.utils";
+import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
 import { ProductDTO } from "@/modules/products/dto";
 
 const productPlatormStripeSchema = new Schema(
