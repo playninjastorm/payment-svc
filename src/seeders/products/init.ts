@@ -1,12 +1,12 @@
 import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
-import { type ProductModel } from "@/modules/products/model";
+import { ProductModel } from "@/modules/products/model";
 import ProductsRepository from "@/modules/products/repository";
 
 const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
-    sku: "TOKEN_30000",
+    sku: ProductModel.CodeEnum.TOKEN_30000,
     basePrice: 49.99,
     active: true,
     platforms: {
@@ -18,13 +18,13 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         productId: "PROD-30000",
       },
       xsolla: {
-        sku: "TOKEN_30000",
+        sku: ProductModel.CodeEnum.TOKEN_30000,
       },
     },
   },
   {
     name: "Token",
-    sku: "TOKEN_13500",
+    sku: ProductModel.CodeEnum.TOKEN_13500,
     basePrice: 24.99,
     active: true,
     platforms: {
@@ -36,13 +36,13 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         productId: "PROD-13500",
       },
       xsolla: {
-        sku: "TOKEN_13500",
+        sku: ProductModel.CodeEnum.TOKEN_13500,
       },
     },
   },
   {
     name: "Token",
-    sku: "TOKEN_5000",
+    sku: ProductModel.CodeEnum.TOKEN_5000,
     basePrice: 9.99,
     active: true,
     platforms: {
@@ -54,13 +54,13 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         productId: "PROD-5000",
       },
       xsolla: {
-        sku: "TOKEN_5000",
+        sku: ProductModel.CodeEnum.TOKEN_5000,
       },
     },
   },
   {
     name: "Token",
-    sku: "TOKEN_2000",
+    sku: ProductModel.CodeEnum.TOKEN_2000,
     basePrice: 4.99,
     active: true,
     platforms: {
@@ -72,13 +72,13 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         productId: "PROD-2000",
       },
       xsolla: {
-        sku: "TOKEN_2000",
+        sku: ProductModel.CodeEnum.TOKEN_2000,
       },
     },
   },
   {
     name: "Token",
-    sku: "TOKEN_1000",
+    sku: ProductModel.CodeEnum.TOKEN_1000,
     basePrice: 2.99,
     active: true,
     platforms: {
@@ -89,21 +89,21 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
       paypal: {
         productId: "PROD-1000",
       },
-      xsolla: {
-        sku: "TOKEN_1000",
-      },
+      xsolla: null,
     },
   },
   {
     name: "Token",
-    sku: "TOKEN_500",
-    basePrice: 2.99,
+    sku: ProductModel.CodeEnum.TOKEN_500,
+    basePrice: 1.99,
     active: true,
     platforms: {
       stripe: {
         productId: "price_1QMLzAFWwrZP60SHcsfNxnYi",
         defaultPriceId: "price_1QMLzAFWwrZP60SHcsfNxnYi",
       },
+      paypal: null,
+      xsolla: null,
     },
   },
 ];

@@ -1,6 +1,15 @@
 import { t } from "elysia";
 
 export namespace ProductModel {
+  export enum CodeEnum {
+    TOKEN_30000 = "TOKEN_30000",
+    TOKEN_13500 = "TOKEN_13500",
+    TOKEN_5000 = "TOKEN_5000",
+    TOKEN_2000 = "TOKEN_2000",
+    TOKEN_1000 = "TOKEN_1000",
+    TOKEN_500 = "TOKEN_500",
+  }
+
   export const PlatformStripe = t.Object({
     productId: t.String({
       title: "Stripe Product ID",
@@ -32,7 +41,7 @@ export namespace ProductModel {
       title: "Xsolla SKU",
       minLength: 2,
       maxLength: 500,
-      examples: ["TOKEN_30000"],
+      examples: [CodeEnum.TOKEN_30000],
     }),
   });
   export type PlatformXsolla = typeof PlatformXsolla.static;
@@ -59,7 +68,7 @@ export namespace ProductModel {
       title: "Product SKU",
       minLength: 2,
       maxLength: 255,
-      examples: ["TOKEN_30000", "TOKEN_13500"],
+      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
     }),
     basePrice: t.Number({
       minimum: 0,
@@ -98,7 +107,7 @@ export namespace ProductModel {
       title: "Product SKU",
       minLength: 2,
       maxLength: 255,
-      examples: ["TOKEN_30000", "TOKEN_13500"],
+      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
     }),
     basePrice: t.Number({
       minimum: 0,

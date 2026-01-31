@@ -32,11 +32,17 @@ export const errorHandler = () => {
         };
       }
 
-      // TODO: Custom messages errors
+      if (code === "NOT_FOUND") {
+        set.status = 404;
+        return {
+          code: set.status,
+          message: "The requested resource was not found",
+        };
+      }
 
       set.status = 500;
       return {
-        error: "Internal Server Error",
+        code: set.status,
         message: "Internal Server Error",
       };
     },
