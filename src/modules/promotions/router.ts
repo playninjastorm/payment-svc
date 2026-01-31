@@ -43,7 +43,9 @@ export const promotionsRouter = new Elysia({
       };
     },
     {
+      body: PromotionModel.Create,
       response: {
+        201: CommonDTO.ResponseData(PromotionModel.Details),
         422: CommonDTO.ResponseValidationError,
         500: CommonDTO.ResponseInternalError,
       },

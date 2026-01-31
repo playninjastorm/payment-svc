@@ -1,5 +1,7 @@
 import { t } from "elysia";
 
+import { ProductModel } from "@/modules/products/model";
+
 export namespace PromotionModel {
   export enum ScopeModeEnum {
     SKUS = "SKUS",
@@ -32,6 +34,71 @@ export namespace PromotionModel {
   });
   export type Scope = typeof Scope.static;
 
+  export const ProductLine = t.Object({
+    sku: t.String({
+      title: "Product SKU",
+      examples: [ProductModel.CodeEnum.TOKEN_30000],
+    }),
+    finalPrice: t.Number({
+      title: "Final Price After Discount",
+      minimum: 0,
+      examples: [49.99],
+    }),
+    baseSnapshot: t.Number({
+      title: "Base Price Snapshot Before Discount",
+      minimum: 0,
+      examples: [84.99],
+    }),
+    discount: t.Object({
+      amountOff: t.Number({
+        title: "Amount Off",
+        minimum: 0,
+        examples: [35.0],
+      }),
+      percentOff: t.Number({
+        title: "Percent Off",
+        minimum: 0,
+        maximum: 100,
+        examples: [41.18],
+      }),
+    }),
+    platformSync: t.Object({
+      stripe: t.Optional(
+        t.Union([
+          t.Object({
+            priceId: t.String({
+              title: "Stripe Promotion Price ID",
+              minLength: 2,
+              maxLength: 500,
+              examples: ["price_promo_usd_999"],
+            }),
+          }),
+          t.Null(),
+        ]),
+      ),
+      paypal: t.Optional(t.Union([t.Object({}), t.Null()])),
+      xsolla: t.Optional(
+        t.Union([
+          t.Object({
+            promotionId: t.String({
+              title: "Xsolla Promotion ID",
+              minLength: 2,
+              maxLength: 500,
+              examples: [""],
+            }),
+            amountOff: t.Number({
+              title: "Amount Off for Xsolla",
+              minimum: 0,
+              examples: [35.0],
+            }),
+          }),
+          t.Null(),
+        ]),
+      ),
+    }),
+  });
+  export type ProductLine = typeof ProductLine.static;
+
   export const Details = t.Object({
     id: t.String({
       title: "Promotion ID (MongoDB ObjectId as string)",
@@ -49,7 +116,9 @@ export namespace PromotionModel {
       examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
     }),
     scope: Scope,
-    // <---
+    lines: t.Array(ProductLine, {
+      title: "Promotion Product Lines",
+    }),
     createdAt: t.Union(
       [t.String({ title: "Created At", format: "date-time" }), t.Date()],
       {
@@ -92,28 +161,29 @@ export namespace PromotionModel {
     ),
   });
   export type Details = typeof Details.static;
-}
 
-// {
-//   "lines": [
-//     {
-//       "sku": "TOKENS_30000",
-//       "finalPrice": 49.99,
-//       "baseSnapshot": 84.99,
-//       "discount": {
-//         "amountOff": 35.0,
-//         "percentOff": 41.18
-//       },
-//       "platformSync": {
-//         "stripe": {
-//           "priceId": "price_promo_usd_999"
-//         },
-//         "paypal": {},
-//         "xsolla": {
-//           "promotionId": "",
-//           "amountOff": 35.0
-//         }
-//       }
-//     }
-//   ],
-// }
+  export const Create = t.Object({
+    name: t.String({
+      title: "Promotion Name",
+      minLength: 2,
+      maxLength: 100,
+      examples: ["Anniversary 2025", "Valentine's Day 2024"],
+    }),
+    schedule: Schedule,
+    state: t.Optional(
+      t.Union([
+        t.Enum(StateEnum, {
+          title: "Promotion State",
+          examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
+          default: StateEnum.SCHEDULED,
+        }),
+        t.Null(),
+      ]),
+    ),
+    scope: Scope,
+    lines: t.Array(ProductLine, {
+      title: "Promotion Product Lines",
+    }),
+  });
+  export type Create = typeof Create.static;
+}
