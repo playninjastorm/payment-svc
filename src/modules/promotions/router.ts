@@ -9,7 +9,6 @@ export const promotionsRouter = new Elysia({
   .get(
     "",
     () => {
-      // TODO: TEST ERROR 500 HANDLER
       return {
         code: 200,
         message: "Promotions route is working",
@@ -30,8 +29,8 @@ export const promotionsRouter = new Elysia({
       query: CommonDTO.PaginationQuery,
       response: {
         200: CommonDTO.ResponseDataListPagination(PromotionModel.Details),
-        // TODO: 422
-        // TODO: 500
+        422: CommonDTO.ResponseValidationError,
+        500: CommonDTO.ResponseInternalError,
       },
     },
   )
@@ -45,8 +44,8 @@ export const promotionsRouter = new Elysia({
     },
     {
       response: {
-        // TODO: 422
-        // TODO: 500
+        422: CommonDTO.ResponseValidationError,
+        500: CommonDTO.ResponseInternalError,
       },
     },
   );

@@ -115,4 +115,62 @@ export namespace CommonDTO {
   export type ResponseDataListPagination<TData extends TSchema> = Static<
     ReturnType<typeof ResponseDataListPagination<TData>>
   >;
+
+  export const ResponseNotFound = t.Object({
+    code: t.Number({
+      title: "Response Code",
+      examples: [422],
+      default: 422,
+    }),
+    message: t.String({
+      title: "Response Message",
+      examples: [
+        "The requested resource was not found",
+        "Product not found",
+        "Promotion not found",
+      ],
+    }),
+  });
+
+  export type ResponseNotFound = typeof ResponseNotFound.static;
+
+  export const ResponseInternalError = t.Object({
+    code: t.Number({
+      title: "Response Code",
+      examples: [500],
+      default: 500,
+    }),
+    message: t.String({
+      title: "Response Message",
+      examples: ["Internal Server Error"],
+    }),
+  });
+
+  export type ResponseInternalError = typeof ResponseInternalError.static;
+
+  export const ResponseValidationError = t.Object({
+    code: t.Number({
+      title: "Response Code",
+      examples: [422],
+      default: 422,
+    }),
+    message: t.String({
+      title: "Response Message",
+      examples: ["Validation Error"],
+    }),
+    errors: t.Array(
+      t.Object({
+        field: t.String({
+          title: "Field Name",
+          examples: ["name", "email", "page"],
+        }),
+        error: t.String({
+          title: "Error Message",
+          examples: ["Property 'page' should be one of: 'numeric', 'number'"],
+        }),
+      }),
+    ),
+  });
+
+  export type ResponseValidationError = typeof ResponseValidationError.static;
 }

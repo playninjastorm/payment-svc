@@ -21,8 +21,7 @@ export const productsRouter = new Elysia({
   {
     response: {
       200: CommonDTO.ResponseDataList(ProductModel.Details),
-      // TODO: 422
-      // TODO: 500
+      500: CommonDTO.ResponseInternalError,
     },
   },
 );
