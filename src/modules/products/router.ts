@@ -1,27 +1,46 @@
 import Elysia from "elysia";
 
-import { CommonDTO } from "@/commons/dto";
-import { ProductsSvc } from "@/modules/products/service";
+import { HttpDTO } from "@/commons/dto/http.dto";
+import { ProductService } from "@/modules/products/service";
 import { ProductModel } from "@/modules/products/model";
 
 export const productsRouter = new Elysia({
   prefix: "/v1/products",
   tags: ["Products"],
-}).get(
-  "",
-  async () => {
-    const items = await ProductsSvc.list();
+})
+  .get(
+    "",
+    async () => {
+      const items = await ProductService.list();
 
-    return {
-      code: 200,
-      message: "Products route is working",
-      data: { items },
-    };
-  },
-  {
-    response: {
-      200: CommonDTO.ResponseDataList(ProductModel.Details),
-      500: CommonDTO.ResponseInternalError,
+      return {
+        code: 200,
+        message: "Products route is working",
+        data: { items },
+      };
     },
-  },
-);
+    {
+      response: {
+        200: HttpDTO.ResponseDataList(ProductModel.Details),
+        500: HttpDTO.ResponseInternalError,
+      },
+    },
+  )
+  .get(
+    "/store",
+    async () => {
+      const items = await ProductService.storeList();
+
+      return {
+        code: 200,
+        message: "Products store route is working",
+        data: { items },
+      };
+    },
+    {
+      response: {
+        200: HttpDTO.ResponseDataList(ProductModel.Store),
+        500: HttpDTO.ResponseInternalError,
+      },
+    },
+  );

@@ -1,36 +1,36 @@
-import { status } from "elysia";
-
 import { ProductModel } from "@/modules/products/model";
-import ProductsRepository from "@/modules/products/repository";
+import ProductRepository from "@/modules/products/repository";
 
-export abstract class ProductsSvc {
+export abstract class ProductService {
   static async list() {
-    try {
-      const items = await ProductsRepository.list();
+    const items = await ProductRepository.list();
 
-      return items;
-    } catch (err: any) {
-      throw status(500, {
-        error: "Failed to fetch products",
-        message: err?.message ?? String(err),
-      });
-    }
+    return items;
+  }
+
+  static async storeList() {
+    const items = await ProductRepository.list();
+
+    // TODO: Usar PromotionsRepository para buscar las promociones activas y aplicarlas a los productos
+    const storeItems: ProductModel.Store[] = items.map((item) => ({
+      sku: item.sku,
+      display: {
+        base: item.basePrice, // TODO: Aplicar promociones si existen
+        final: item.basePrice, // TODO: Aplicar promociones si existen
+        amountOff: 0, // TODO: Aplicar promociones si existen
+        percentOff: 0, // TODO: Aplicar promociones si existen
+        label: "No Promotion", // TODO: Aplicar promociones si existen
+      },
+    }));
+
+    return storeItems;
   }
 
   static async createBulk(products: ProductModel.Create[]) {
-    try {
-      const raw = await ProductsRepository.createBulk(products);
+    const items = await ProductRepository.createBulk(products);
 
-      const items: any = raw.map((item) => ({ ...item }));
-
-      return items;
-    } catch (err: any) {
-      throw status(500, {
-        error: "Failed to create products",
-        message: err?.message ?? String(err),
-      });
-    }
+    return items;
   }
 }
 
-export default ProductsSvc;
+export default ProductService;

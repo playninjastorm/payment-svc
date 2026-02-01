@@ -120,4 +120,41 @@ export namespace ProductModel {
     platforms: Platforms,
   });
   export type Create = typeof Create.static;
+
+  export const Store = t.Object({
+    sku: t.String({
+      title: "Product SKU",
+      minLength: 2,
+      maxLength: 255,
+      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
+    }),
+    display: t.Object({
+      base: t.Number({
+        title: "Base Price",
+        minimum: 0,
+        examples: [84.99, 49.99],
+      }),
+      final: t.Number({
+        title: "Final Price",
+        minimum: 0,
+        examples: [49.99, 29.99],
+      }),
+      amountOff: t.Number({
+        title: "Amount Off",
+        examples: [35.0, 20.0],
+      }),
+      percentOff: t.Number({
+        title: "Percent Off",
+        maximum: 100,
+        examples: [41.18, 40.0],
+      }),
+      label: t.String({
+        title: "Discount Label",
+        minLength: 2,
+        maxLength: 50,
+        examples: ["40% OFF", "20% OFF"],
+      }),
+    }),
+  });
+  export type Store = typeof Store.static;
 }

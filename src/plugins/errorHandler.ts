@@ -8,7 +8,11 @@ export const errorHandler = () => {
         let code = 400;
         let message = "Internal error";
 
-        if (error.type == "query" || error.type == "params") {
+        if (
+          error.type == "query" ||
+          error.type == "params" ||
+          error.type == "body"
+        ) {
           code = 422;
           message = "Validation Error";
         }

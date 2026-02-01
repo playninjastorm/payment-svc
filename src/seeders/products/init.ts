@@ -1,7 +1,7 @@
 import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
 import { ProductModel } from "@/modules/products/model";
-import ProductsRepository from "@/modules/products/repository";
+import ProductRepository from "@/modules/products/repository";
 
 const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
@@ -111,7 +111,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
 export async function initProductsSeed() {
   await connectDb();
 
-  const products = await ProductsRepository.createBulk(PRODUCTS_SEED_DATA);
+  const products = await ProductRepository.createBulk(PRODUCTS_SEED_DATA);
 
   logger.info(`Seeded: ${products.flatMap((p) => p.sku).join(", ")}.`);
 }

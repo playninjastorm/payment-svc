@@ -1,6 +1,8 @@
-import { CommonDTO } from "@/commons/dto";
 import Elysia from "elysia";
-import { PromotionModel } from "./model";
+
+import { HttpDTO } from "@/commons/dto/http.dto";
+import { PromotionModel } from "@/modules/promotions/model";
+import { PromotionService } from "@/modules/promotions/service";
 
 export const promotionsRouter = new Elysia({
   prefix: "/v1/promotions",
@@ -8,46 +10,44 @@ export const promotionsRouter = new Elysia({
 })
   .get(
     "",
-    () => {
+    async ({ query }) => {
+      const { items, pagination } = await PromotionService.list(query);
+
       return {
         code: 200,
-        message: "Promotions route is working",
+        message: "Promotions fetched successfully",
         data: {
-          items: [],
-          pagination: {
-            page: 1,
-            limit: 10,
-            totalItems: 0,
-            totalPages: 0,
-            hasNextPage: true,
-            hasPreviousPage: false,
-          },
+          items,
+          pagination,
         },
       };
     },
     {
-      query: CommonDTO.PaginationQuery,
+      query: HttpDTO.PaginationQuery,
       response: {
-        200: CommonDTO.ResponseDataListPagination(PromotionModel.Details),
-        422: CommonDTO.ResponseValidationError,
-        500: CommonDTO.ResponseInternalError,
+        200: HttpDTO.ResponseDataListPagination(PromotionModel.Details),
+        422: HttpDTO.ResponseValidationError,
+        500: HttpDTO.ResponseInternalError,
       },
     },
   )
   .post(
     "",
-    () => {
+    async ({ body }) => {
+      const data = await PromotionService.create(body);
+
       return {
         code: 201,
         message: "Promotion created successfully",
+        data,
       };
     },
     {
       body: PromotionModel.Create,
       response: {
-        201: CommonDTO.ResponseData(PromotionModel.Details),
-        422: CommonDTO.ResponseValidationError,
-        500: CommonDTO.ResponseInternalError,
+        201: HttpDTO.ResponseData(PromotionModel.Details),
+        422: HttpDTO.ResponseValidationError,
+        500: HttpDTO.ResponseInternalError,
       },
     },
   );

@@ -1,6 +1,6 @@
 import { Static, t, TSchema } from "elysia";
 
-export namespace CommonDTO {
+export namespace HttpDTO {
   export const PaginationQuery = t.Object({
     page: t.Number({
       title: "Page Number",
