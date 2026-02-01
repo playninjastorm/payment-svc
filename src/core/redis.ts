@@ -9,10 +9,11 @@ const redis = new Redis({
   username: ENV.REDIS_USERNAME,
   password: ENV.REDIS_PASSWORD,
   db: ENV.REDIS_DB,
+  maxRetriesPerRequest: null,
 });
 
 redis.on("connect", () => {
-  logger.info("⚡ Connected to Redis");
+  logger.info("Connected to Redis");
 });
 
 redis.on("error", (err) => {

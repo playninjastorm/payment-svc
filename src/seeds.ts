@@ -78,14 +78,14 @@ async function main() {
 
   // No --name provided at all
   if (name === undefined) {
-    printHelp("❌ Missing --name. Use --list to see available seeders.");
+    printHelp("Missing --name. Use --list to see available seeders.");
     process.exit(1);
   }
 
   // --name was provided but empty or missing value
   if (name.trim() === "") {
     printHelp(
-      "❌ You must choose a seeder name. Use --list to see available seeders.",
+      "You must choose a seeder name. Use --list to see available seeders.",
     );
     process.exit(1);
   }
@@ -93,18 +93,18 @@ async function main() {
   // Seeder doesn't exist
   if (!hasSeeder(name)) {
     printHelp(
-      `❌ That seeder does not exist: ${name}\nUse --list to see available seeders.`,
+      `That seeder does not exist: ${name}\nUse --list to see available seeders.`,
     );
     process.exit(1);
   }
 
   try {
-    logger.info(`✅ Running ${name} seeder`);
+    logger.info(`Running ${name} seeder`);
     await SEEDERS[name]();
-    logger.info(`✅ Seeder ${name} completed successfully.`);
+    logger.info(`Seeder ${name} completed successfully.`);
     process.exit(0);
   } catch (error) {
-    logger.error({ error }, `❌ Failed to run seeder ${name}`);
+    logger.error({ error }, `Failed to run seeder ${name}`);
     process.exit(1);
   }
 }

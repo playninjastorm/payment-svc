@@ -37,19 +37,20 @@ export abstract class PromotionRepository {
 
   static async findByScheduleTime(date: Date) {
     return await PromotionDB.find({
+      state: PromotionModel.StateEnum.SCHEDULED,
       "schedule.startsAt": { $lte: date },
       "schedule.endsAt": { $gte: date },
     });
   }
 
-  static async updateStatus(id: string, status: PromotionModel.StateEnum) {
-    const update: Record<string, any> = { status };
+  static async updateState(id: string, state: PromotionModel.StateEnum) {
+    const update: Record<string, any> = { state };
 
-    if (status === PromotionModel.StateEnum.ACTIVE) {
+    if (state === PromotionModel.StateEnum.ACTIVE) {
       update.activatedAt = new Date();
     }
 
-    if (status === PromotionModel.StateEnum.ENDED) {
+    if (state === PromotionModel.StateEnum.ENDED) {
       update.endedAt = new Date();
     }
 

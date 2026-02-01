@@ -28,9 +28,9 @@ export const connectDb = async () => {
 
     logger.info(
       { databaseName: res.connection.name },
-      "💿 MongoDB connection successful",
+      "MongoDB connection successful",
     );
   } catch (error) {
-    logger.error({ error }, "❌ Failed to connect MongoDB:");
+    logger.error({ error }, "Failed to connect MongoDB:");
   }
 };

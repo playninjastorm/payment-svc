@@ -1,8 +1,11 @@
 import { Queue, Worker } from "bullmq";
 
-import { redis } from "@/core/redis";
+import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
+import { redis } from "@/core/redis";
 import { PromotionJob } from "@/modules/promotions/job";
+
+await connectDb();
 
 export const WORKER_QUEUE_NAME = "nk-payments-worker";
 
@@ -20,28 +23,34 @@ export const worker = new Worker(
 
     logger.warn(
       {
+        worker: WORKER_QUEUE_NAME,
         name: job.name,
         data: job.data,
       },
-      `[${WORKER_QUEUE_NAME}] Unknown job`,
+      "Unknown job",
     );
   },
   { connection: redis },
 );
 
+worker.on("ready", () => {
+  logger.info({ worker: WORKER_QUEUE_NAME }, "Worker is ready");
+});
+
 worker.on("failed", (job, err) => {
   logger.error(
     {
-      jobName: job?.name,
+      worker: WORKER_QUEUE_NAME,
+      job: job?.name,
       err,
     },
-    `[${WORKER_QUEUE_NAME}] failed`,
+    "Failed to process job",
   );
 });
 
 // shutdown limpio
 const shutdown = async () => {
-  logger.info("[worker] shutting down...");
+  logger.info({ worker: WORKER_QUEUE_NAME }, "Shutting down...");
   await worker.close();
   await redis.quit();
   process.exit(0);
@@ -49,5 +58,3 @@ const shutdown = async () => {
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
-
-logger.info(`[${WORKER_QUEUE_NAME}] listening on queue`);

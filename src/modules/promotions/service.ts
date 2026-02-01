@@ -27,6 +27,14 @@ export abstract class PromotionService {
 
   static async findByScheduleTime(date: Date) {
     const data = await PromotionRepository.findByScheduleTime(date);
+    return data;
+  }
+
+  static async activatePromotion(id: string) {
+    const data = await PromotionRepository.updateState(
+      id,
+      PromotionModel.StateEnum.ACTIVE,
+    );
 
     return data;
   }

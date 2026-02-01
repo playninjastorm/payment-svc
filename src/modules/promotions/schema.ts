@@ -104,11 +104,11 @@ const promotionSchema = new Schema<PromotionModel.Details>(
     scope: promotionScopeSchema,
     lines: [promotionLinesSchema],
     activatedAt: {
-      type: String,
+      type: Date,
       default: null,
     },
     endedAt: {
-      type: String,
+      type: Date,
       default: null,
     },
   },

@@ -16,6 +16,7 @@ export abstract class PromotionJob {
     }
 
     for (const promo of promotionsToActivate) {
+      await PromotionService.activatePromotion(promo.id);
       logger.info(meta, `Activating promotion: ${promo.name}`);
     }
   }
