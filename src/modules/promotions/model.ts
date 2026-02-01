@@ -170,16 +170,6 @@ export namespace PromotionModel {
       examples: ["Anniversary 2025", "Valentine's Day 2024"],
     }),
     schedule: Schedule,
-    state: t.Optional(
-      t.Union([
-        t.Enum(StateEnum, {
-          title: "Promotion State",
-          examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
-          default: StateEnum.SCHEDULED,
-        }),
-        t.Null(),
-      ]),
-    ),
     scope: Scope,
     lines: t.Array(ProductLine, {
       title: "Promotion Product Lines",
