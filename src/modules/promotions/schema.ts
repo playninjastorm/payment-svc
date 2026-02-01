@@ -7,11 +7,11 @@ import { ProductModel } from "@/modules/products/model";
 const promotionScheduleSchema = new Schema(
   {
     startsAt: {
-      type: String,
+      type: Date,
       required: true,
     },
     endsAt: {
-      type: String,
+      type: Date,
       required: true,
     },
   },
@@ -58,6 +58,28 @@ const promotionLinesSchema = new Schema(
         required: true,
         min: 0,
         max: 100,
+      },
+    },
+    platformSync: {
+      stripe: {
+        priceId: {
+          type: String,
+          default: null,
+        },
+      },
+      paypal: {
+        type: String,
+        default: null,
+      },
+      xsolla: {
+        promotionId: {
+          type: String,
+          default: null,
+        },
+        amountOff: {
+          type: Number,
+          default: true,
+        },
       },
     },
   },

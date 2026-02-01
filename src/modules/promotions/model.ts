@@ -15,14 +15,22 @@ export namespace PromotionModel {
   }
 
   export const Schedule = t.Object({
-    startsAt: t.String({
-      title: "Promotion Start DateTime (ISO 8601 string)",
-      examples: ["2024-07-01T00:00:00Z"],
-    }),
-    endsAt: t.String({
-      title: "Promotion End DateTime (ISO 8601 string)",
-      examples: ["2024-07-15T23:59:59Z"],
-    }),
+    startsAt: t.Union([
+      t.String({
+        title: "Promotion Start DateTime (ISO 8601 string)",
+        format: "date-time",
+        examples: ["2024-07-01T00:00:00Z"],
+      }),
+      t.Date(),
+    ]),
+    endsAt: t.Union([
+      t.String({
+        title: "Promotion End DateTime (ISO 8601 string)",
+        examples: ["2024-07-15T23:59:59Z"],
+        format: "date-time",
+      }),
+      t.Date(),
+    ]),
   });
   export type Schedule = typeof Schedule.static;
 

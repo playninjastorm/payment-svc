@@ -24,4 +24,10 @@ export abstract class PromotionService {
 
     return data;
   }
+
+  static async findByScheduleTime(date: Date) {
+    const data = await PromotionRepository.findByScheduleTime(date);
+
+    return data;
+  }
 }

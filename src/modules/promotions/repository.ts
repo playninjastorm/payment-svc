@@ -34,4 +34,25 @@ export abstract class PromotionRepository {
   static async create(promotion: PromotionModel.Create) {
     return await PromotionDB.create(promotion);
   }
+
+  static async findByScheduleTime(date: Date) {
+    return await PromotionDB.find({
+      "schedule.startsAt": { $lte: date },
+      "schedule.endsAt": { $gte: date },
+    });
+  }
+
+  static async updateStatus(id: string, status: PromotionModel.StateEnum) {
+    const update: Record<string, any> = { status };
+
+    if (status === PromotionModel.StateEnum.ACTIVE) {
+      update.activatedAt = new Date();
+    }
+
+    if (status === PromotionModel.StateEnum.ENDED) {
+      update.endedAt = new Date();
+    }
+
+    return PromotionDB.findByIdAndUpdate(id, update, { new: true });
+  }
 }

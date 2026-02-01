@@ -12,6 +12,8 @@ import { promotionsRouter } from "@/modules/promotions/router";
 import { errorHandler } from "@/plugins/errorHandler";
 import { requestID } from "@/plugins/requestId";
 import { requestLogger } from "@/plugins/requestLogger";
+import { PromotionJob } from "@/modules/promotions/job";
+import { paymentQueue } from "@/worker";
 
 await connectDb();
 
@@ -29,12 +31,17 @@ const app = new Elysia()
   .use(errorHandler())
   .use(
     cron({
-      name: "promotions-check-scheduled ",
+      name: PromotionJob.JOB_ACTIVATE_SCHEDULED_NAME,
       pattern: "0 * * * * *",
-      run() {
-        logger.info(
-          { timestamp: new Date().toISOString() },
-          "[Cronjob] Check promotions",
+      async run() {
+        paymentQueue.add(
+          PromotionJob.JOB_ACTIVATE_SCHEDULED_NAME,
+          {},
+          {
+            removeOnComplete: true,
+            attempts: 3,
+            backoff: { type: "exponential", delay: 1000 },
+          },
         );
       },
     }),
