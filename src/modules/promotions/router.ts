@@ -3,7 +3,6 @@ import Elysia from "elysia";
 import { HttpDTO } from "@/commons/dto/http.dto";
 import { PromotionModel } from "@/modules/promotions/model";
 import { PromotionService } from "@/modules/promotions/service";
-import { PromotionJob } from "./job";
 
 export const promotionsRouter = new Elysia({
   prefix: "/v1/promotions",
@@ -13,8 +12,6 @@ export const promotionsRouter = new Elysia({
     "",
     async ({ query }) => {
       const { items, pagination } = await PromotionService.list(query);
-
-      await PromotionJob.activateScheduledPromotions();
 
       return {
         code: 200,

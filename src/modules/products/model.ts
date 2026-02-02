@@ -53,72 +53,53 @@ export namespace ProductModel {
   });
   export type Platforms = typeof Platforms.static;
 
-  export const Details = t.Object({
-    id: t.String({
-      title: "Product ID (MongoDB ObjectId as string)",
-      examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
-    }),
-    name: t.String({
-      title: "Product Name",
-      minLength: 2,
-      maxLength: 100,
-      examples: ["Token", "Emblem"],
-    }),
-    sku: t.String({
-      title: "Product SKU",
-      minLength: 2,
-      maxLength: 255,
-      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
-    }),
-    basePrice: t.Number({
-      minimum: 0,
-      examples: [49.99, 24.99, 9.99],
-    }),
-    active: t.Boolean({
-      title: "Is Active",
-      default: true,
-    }),
-    platforms: Platforms,
-    createdAt: t.Union(
-      [t.String({ title: "Created At", format: "date-time" }), t.Date()],
-      {
-        title: "Creation Timestamp",
-        default: new Date().toISOString(),
-      },
-    ),
-    updatedAt: t.Union(
-      [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
-      {
-        title: "Update Timestamp",
-        default: new Date().toISOString(),
-      },
-    ),
-  });
+  export const Details = t.Object(
+    {
+      id: t.String({
+        title: "Product ID (MongoDB ObjectId as string)",
+        examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
+      }),
+      name: t.String({
+        title: "Product Name",
+        minLength: 2,
+        maxLength: 100,
+        examples: ["Token", "Emblem"],
+      }),
+      sku: t.String({
+        title: "Product SKU",
+        minLength: 2,
+        maxLength: 255,
+        examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
+      }),
+      basePrice: t.Number({
+        minimum: 0,
+        examples: [49.99, 24.99, 9.99],
+      }),
+      active: t.Boolean({
+        title: "Is Active",
+        default: true,
+      }),
+      platforms: Platforms,
+      createdAt: t.Union(
+        [t.String({ title: "Created At", format: "date-time" }), t.Date()],
+        {
+          title: "Creation Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+      updatedAt: t.Union(
+        [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
+        {
+          title: "Update Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+    },
+    {},
+  );
   export type Details = typeof Details.static;
 
-  export const Create = t.Object({
-    name: t.String({
-      title: "Product Name",
-      minLength: 2,
-      maxLength: 100,
-      examples: ["Token", "Emblem"],
-    }),
-    sku: t.String({
-      title: "Product SKU",
-      minLength: 2,
-      maxLength: 255,
-      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
-    }),
-    basePrice: t.Number({
-      minimum: 0,
-      examples: [49.99, 24.99, 9.99],
-    }),
-    active: t.Boolean({
-      title: "Is Active",
-      default: true,
-    }),
-    platforms: Platforms,
-  });
+  export const Create = t.Omit(Details, ["id", "createdAt", "updatedAt"]);
   export type Create = typeof Create.static;
 
   export const Store = t.Object({

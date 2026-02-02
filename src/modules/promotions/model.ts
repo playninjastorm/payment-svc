@@ -198,18 +198,13 @@ export namespace PromotionModel {
   });
   export type Details = typeof Details.static;
 
-  export const Create = t.Object({
-    name: t.String({
-      title: "Promotion Name",
-      minLength: 2,
-      maxLength: 100,
-      examples: ["Anniversary 2025", "Valentine's Day 2024"],
-    }),
-    schedule: Schedule,
-    scope: Scope,
-    lines: t.Array(ProductLine, {
-      title: "Promotion Product Lines",
-    }),
-  });
+  export const Create = t.Omit(Details, [
+    "id",
+    "state",
+    "createdAt",
+    "updatedAt",
+    "activatedAt",
+    "endedAt",
+  ]);
   export type Create = typeof Create.static;
 }
