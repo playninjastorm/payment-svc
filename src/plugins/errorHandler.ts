@@ -1,5 +1,27 @@
 import Elysia from "elysia";
 
+function isEnumSchema(schema: any): boolean {
+  if (!schema) return false;
+
+  // Caso 1: enum clásico
+  if (Array.isArray(schema.enum)) return true;
+
+  // Caso 2: union de literales
+  const variants = schema.anyOf ?? schema.oneOf;
+  return (
+    Array.isArray(variants) &&
+    variants.length > 0 &&
+    variants.every((v) => typeof v?.const !== "undefined")
+  );
+}
+
+function getEnumValues(schema: any): string[] {
+  if (Array.isArray(schema.enum)) return schema.enum;
+
+  const variants = schema.anyOf ?? schema.oneOf ?? [];
+  return variants.map((v: any) => v.const).filter(Boolean);
+}
+
 export const errorHandler = () => {
   return new Elysia({ name: "error-handler" }).onError(
     { as: "global" },
@@ -24,10 +46,20 @@ export const errorHandler = () => {
 
         set.status = code;
 
-        const errors = error.all.map((err: any) => ({
-          field: err.path.slice(1).replaceAll("/", "."),
-          error: err.summary,
-        }));
+        const errors = error.all.map((err: any) => {
+          const field = err.path.slice(1).replaceAll("/", ".");
+          let errorMsg = err.summary;
+
+          if (isEnumSchema(err.schema)) {
+            const enumValues = getEnumValues(err.schema);
+            errorMsg = `Expected one of: ${enumValues.join(", ")}`;
+          }
+
+          return {
+            field,
+            error: errorMsg,
+          };
+        });
 
         return {
           code,

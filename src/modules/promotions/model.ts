@@ -43,7 +43,7 @@ export namespace PromotionModel {
   export type Scope = typeof Scope.static;
 
   export const ProductLine = t.Object({
-    sku: t.String({
+    sku: t.Enum(ProductModel.CodeEnum, {
       title: "Product SKU",
       examples: [ProductModel.CodeEnum.TOKEN_30000],
     }),

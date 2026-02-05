@@ -22,6 +22,8 @@ export abstract class PromotionService {
   static async create(promotion: PromotionModel.Create) {
     const data = await PromotionRepository.create(promotion);
 
+    // TODO: Solo puedes crear promociones si la fecha de schedule no choca con otra ya existente.
+
     return data;
   }
 

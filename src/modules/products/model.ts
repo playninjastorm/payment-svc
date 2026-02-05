@@ -2,12 +2,12 @@ import { t } from "elysia";
 
 export namespace ProductModel {
   export enum CodeEnum {
-    TOKEN_30000 = "TOKEN_30000",
-    TOKEN_13500 = "TOKEN_13500",
-    TOKEN_5000 = "TOKEN_5000",
-    TOKEN_2000 = "TOKEN_2000",
-    TOKEN_1000 = "TOKEN_1000",
-    TOKEN_500 = "TOKEN_500",
+    TOKEN_30000 = "token_30000",
+    TOKEN_13500 = "token_13500",
+    TOKEN_5000 = "token_5000",
+    TOKEN_2000 = "token_2000",
+    TOKEN_1000 = "token_1000",
+    TOKEN_500 = "token_500",
   }
 
   export const PlatformStripe = t.Object({
@@ -65,11 +65,9 @@ export namespace ProductModel {
         maxLength: 100,
         examples: ["Token", "Emblem"],
       }),
-      sku: t.String({
+      sku: t.Enum(ProductModel.CodeEnum, {
         title: "Product SKU",
-        minLength: 2,
-        maxLength: 255,
-        examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
+        examples: [ProductModel.CodeEnum.TOKEN_30000],
       }),
       basePrice: t.Number({
         minimum: 0,
@@ -103,11 +101,9 @@ export namespace ProductModel {
   export type Create = typeof Create.static;
 
   export const Store = t.Object({
-    sku: t.String({
+    sku: t.Enum(ProductModel.CodeEnum, {
       title: "Product SKU",
-      minLength: 2,
-      maxLength: 255,
-      examples: [CodeEnum.TOKEN_30000, CodeEnum.TOKEN_13500],
+      examples: [ProductModel.CodeEnum.TOKEN_30000],
     }),
     display: t.Object({
       base: t.Number({

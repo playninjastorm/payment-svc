@@ -15,6 +15,8 @@ export abstract class PromotionJob {
       return;
     }
 
+    // TODO: Activas una promocion y desactivas las anteriores. Solo activas las nuevas.
+
     for (const promo of promotionsToActivate) {
       await PromotionService.activatePromotion(promo.id);
       logger.info(meta, `Activating promotion: ${promo.name}`);

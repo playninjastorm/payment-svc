@@ -105,7 +105,7 @@ Cuando llega `endsAt`:
 
 ```json
 {
-  "sku": "TOKENS_30000",
+  "sku": "token_30000",
   "name": "30,000 Tokens",
   "basePrice": 84.99,
   "active": true,
@@ -118,7 +118,7 @@ Cuando llega `endsAt`:
       "productId": "PROD-XYZ"
     },
     "xsolla": {
-      "sku": "tokens_30000"
+      "sku": "token_30000"
     }
   },
   "createdAt": "2025-10-20T00:00:00Z",
@@ -141,7 +141,7 @@ Cuando llega `endsAt`:
   "scope": { "mode": "SKUS" },
   "lines": [
     {
-      "sku": "TOKENS_30000",
+      "sku": "token_30000",
       "finalPrice": 49.99,
       "baseSnapshot": 84.99,
       "discount": {
@@ -230,7 +230,7 @@ Ejemplo del objeto retornado en la tienda:
 
 ```json
 {
-  "sku": "TOKENS_30000",
+  "sku": "token_30000",
   "display": {
     "base": 84.99,
     "final": 49.99,
