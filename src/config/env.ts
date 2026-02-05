@@ -1,6 +1,6 @@
 export const ENV = {
   IS_DEV: Bun.env.NODE_ENV != "production",
-  PORT: Bun.env.PORT || "3000",
+  PORT: Bun.env.PORT || "3100",
   API_KEY: Bun.env.API_KEY || "secret-api-key",
   MONGODB_URI: Bun.env.MONGODB_URI || "mongodb://localhost:27017/mydatabase",
   REDIS_HOST: Bun.env.REDIS_HOST || "127.0.0.1",
