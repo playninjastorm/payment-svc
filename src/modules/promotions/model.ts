@@ -42,7 +42,7 @@ export namespace PromotionModel {
   });
   export type Scope = typeof Scope.static;
 
-  export const ProductLine = t.Object({
+  export const PromotionLine = t.Object({
     sku: t.Enum(ProductModel.CodeEnum, {
       title: "Product SKU",
       examples: [ProductModel.CodeEnum.TOKEN_30000],
@@ -133,7 +133,33 @@ export namespace PromotionModel {
       ),
     }),
   });
-  export type ProductLine = typeof ProductLine.static;
+  export type PromotionLine = typeof PromotionLine.static;
+
+  export const PromotionAudit = t.Object({
+    activatedAt: t.Optional(
+      t.Union([
+        t.String({
+          title: "Promotion Activated DateTime (ISO 8601 string)",
+          format: "date-time",
+          examples: ["2024-07-01T00:00:00Z"],
+        }),
+        t.Date(),
+        t.Null(),
+      ]),
+    ),
+    endedAt: t.Optional(
+      t.Union([
+        t.String({
+          title: "Promotion Ended DateTime (ISO 8601 string)",
+          examples: ["2024-07-15T23:59:59Z"],
+          format: "date-time",
+        }),
+        t.Date(),
+        t.Null(),
+      ]),
+    ),
+  });
+  export type PromotionAudit = typeof PromotionAudit.static;
 
   export const Details = t.Object({
     id: t.String({
@@ -152,7 +178,7 @@ export namespace PromotionModel {
       examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
     }),
     scope: Scope,
-    lines: t.Array(ProductLine, {
+    lines: t.Array(PromotionLine, {
       title: "Promotion Product Lines",
     }),
     createdAt: t.Union(
@@ -169,32 +195,7 @@ export namespace PromotionModel {
         default: new Date().toISOString(),
       },
     ),
-    activatedAt: t.Optional(
-      t.Union(
-        [
-          t.String({ title: "Updated At", format: "date-time" }),
-          t.Date(),
-          t.Null(),
-        ],
-        {
-          title: "Update Timestamp",
-          default: new Date().toISOString(),
-        },
-      ),
-    ),
-    endedAt: t.Optional(
-      t.Union(
-        [
-          t.String({ title: "Updated At", format: "date-time" }),
-          t.Date(),
-          t.Null(),
-        ],
-        {
-          title: "Update Timestamp",
-          default: new Date().toISOString(),
-        },
-      ),
-    ),
+    audit: t.Optional(PromotionAudit),
   });
   export type Details = typeof Details.static;
 

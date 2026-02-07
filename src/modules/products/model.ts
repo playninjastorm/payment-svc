@@ -2,6 +2,7 @@ import { t } from "elysia";
 
 export namespace ProductModel {
   export enum CodeEnum {
+    EMBLEM_ELITE = "emblem_elite",
     TOKEN_30000 = "token_30000",
     TOKEN_13500 = "token_13500",
     TOKEN_5000 = "token_5000",

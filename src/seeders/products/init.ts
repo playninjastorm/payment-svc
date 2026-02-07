@@ -5,6 +5,24 @@ import ProductRepository from "@/modules/products/repository";
 
 const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
+    name: "Emblem",
+    sku: ProductModel.CodeEnum.EMBLEM_ELITE,
+    basePrice: 9.99,
+    active: true,
+    platforms: {
+      stripe: {
+        productId: "price_1QMLxzFWwrZP60SHpXSznUl1",
+        defaultPriceId: "price_1QMLxzFWwrZP60SHpXSznUl1",
+      },
+      paypal: {
+        productId: "PROD-EMBLEM",
+      },
+      xsolla: {
+        sku: ProductModel.CodeEnum.EMBLEM_ELITE,
+      },
+    },
+  },
+  {
     name: "Token",
     sku: ProductModel.CodeEnum.TOKEN_30000,
     basePrice: 49.99,

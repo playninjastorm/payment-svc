@@ -47,11 +47,13 @@ export abstract class PromotionRepository {
     const update: Record<string, any> = { state };
 
     if (state === PromotionModel.StateEnum.ACTIVE) {
-      update.activatedAt = new Date();
+      if (!update.audit) update.audit = {};
+      update.audit.activatedAt = new Date();
     }
 
     if (state === PromotionModel.StateEnum.ENDED) {
-      update.endedAt = new Date();
+      if (!update.audit) update.audit = {};
+      update.audit.endedAt = new Date();
     }
 
     return PromotionDB.findByIdAndUpdate(id, update, { new: true });

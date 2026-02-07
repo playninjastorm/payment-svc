@@ -11,9 +11,14 @@ export const requestLogger = (header = "X-Request-ID") =>
       const duration = (performance.now() - start).toFixed(1);
       const requestId = set.headers[header] ?? "no-id";
 
+      const url = new URL(request.url);
+      const pathname = url.pathname;
+      const queryParams = url.searchParams.toString();
+      const finalUrl = `${pathname}${queryParams ? `?${queryParams}` : ""}`;
+
       logger.info(
         { requestId },
-        `${request.method} ${new URL(request.url).pathname} -> ${set.status} | ${duration}ms`,
+        `${request.method} ${finalUrl} -> ${set.status} | ${duration}ms`,
       );
     })
     .onError({ as: "global" }, ({ request, set, error, store }) => {

@@ -162,8 +162,10 @@ Cuando llega `endsAt`:
   ],
   "createdAt": "2025-07-20T10:00:00Z",
   "updatedAt": "2025-07-21T16:00:00Z",
-  "activatedAt": null,
-  "endedAt": null
+  "audit": {
+    "activatedAt": null,
+    "endedAt": null
+  }
 }
 ```
 

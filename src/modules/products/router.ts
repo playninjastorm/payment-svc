@@ -44,3 +44,6 @@ export const productsRouter = new Elysia({
       },
     },
   );
+
+// TODO: Hacer un endpoint get, que dependiendo de la tienda retorne el monto para esa store
+// TODO: Podria ser /store y que solo devuelva la data de esa tienda en especifica

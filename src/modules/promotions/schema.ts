@@ -86,6 +86,20 @@ const promotionLinesSchema = new Schema(
   { _id: false },
 );
 
+const promotionAuditSchema = new Schema(
+  {
+    activatedAt: {
+      type: Date,
+      required: false,
+    },
+    endedAt: {
+      type: Date,
+      required: false,
+    },
+  },
+  { _id: false },
+);
+
 const promotionSchema = new Schema<PromotionModel.Details>(
   {
     name: {
@@ -103,14 +117,7 @@ const promotionSchema = new Schema<PromotionModel.Details>(
     },
     scope: promotionScopeSchema,
     lines: [promotionLinesSchema],
-    activatedAt: {
-      type: Date,
-      default: null,
-    },
-    endedAt: {
-      type: Date,
-      default: null,
-    },
+    audit: promotionAuditSchema,
   },
   DEFAULT_OPTIONS_SCHEMA,
 );
