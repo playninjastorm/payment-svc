@@ -46,6 +46,8 @@ export const errorHandler = () => {
 
         set.status = code;
 
+        console.log(error.all);
+
         const errors = error.all.map((err: any) => {
           const field = err.path.slice(1).replaceAll("/", ".");
           let errorMsg = err.summary;

@@ -8,11 +8,12 @@ import { ENV } from "@/config/env";
 import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
 import { productsRouter } from "@/modules/products/router";
+import { PromotionJob } from "@/modules/promotions/job";
 import { promotionsRouter } from "@/modules/promotions/router";
+import { transactionsRouter } from "@/modules/transactions/router";
 import { errorHandler } from "@/plugins/errorHandler";
 import { requestID } from "@/plugins/requestId";
 import { requestLogger } from "@/plugins/requestLogger";
-import { PromotionJob } from "@/modules/promotions/job";
 import { paymentQueue } from "@/worker";
 
 await connectDb();
@@ -61,6 +62,7 @@ const app = new Elysia()
   )
   .use(productsRouter)
   .use(promotionsRouter)
+  .use(transactionsRouter)
   .listen(ENV.PORT);
 
 logger.info(
