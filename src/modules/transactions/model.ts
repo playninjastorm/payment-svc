@@ -129,71 +129,90 @@ export namespace TransactionModel {
   );
   export type PurchasedDetails = typeof PurchasedDetails.static;
 
-  export const Details = t.Object({
-    id: t.String({
-      title: "Transaction ID (MongoDB ObjectId as string)",
-      examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
-    }),
-    method: t.String({
-      title: "Payment Method",
-      examples: [PaymentMethodEnum.XSOLLA, PaymentMethodEnum.STRIPE],
-    }),
-    purchasedItems: t.Array(PurchasedItem, {
-      title: "List of Purchased Items",
-    }),
-    amount: t.Number({
-      title: "Total Amount of the Transaction",
-      minimum: 0,
-      examples: [49.99],
-    }),
-    orderId: t.String({
-      title: "Order ID from the Payment Provider",
-      minLength: 2,
-      maxLength: 500,
-      examples: ["order_1QMLzA2eZvKYlo2C0q1X3PaX"],
-    }),
-    isReseller: t.Boolean({
-      title: "Indicates if the Transaction is made by a Reseller",
-      default: false,
-    }),
-    details: t.Optional(PurchasedDetails),
-    extraInfo: t.Optional(
-      t.Union([t.Object(t.Any()), t.Null()], {
-        title: "Extra Information from the Payment Provider",
-        default: null,
-      }),
-    ),
-    status: t.Enum(StatusEnum, {
-      title: "Transaction Status",
-      default: StatusEnum.PENDING,
-      examples: [StatusEnum.SUCCESS],
-    }),
-    charId: t.Optional(
-      t.Union(
-        [
-          t.Number({
-            title: "Character ID associated with the Transaction",
-            minimum: 1,
-            examples: [123456],
-          }),
-          t.Null(),
-        ],
-        {
-          title: "Character ID or null if not applicable",
-          default: null,
-        },
-      ),
-    ),
-    promotionId: t.Optional(
-      t.String({
-        title: "Promotion ID (MongoDB ObjectId as string)",
+  export const Details = t.Object(
+    {
+      id: t.String({
+        title: "Transaction ID (MongoDB ObjectId as string)",
         examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
       }),
-    ),
-    userId: t.String({
-      title: "User ID (MongoDB ObjectId as string)",
-      examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
-    }),
-  });
+      method: t.Enum(PaymentMethodEnum, {
+        title: "Payment Method",
+        examples: [PaymentMethodEnum.XSOLLA, PaymentMethodEnum.STRIPE],
+      }),
+      purchasedItems: t.Array(PurchasedItem, {
+        title: "List of Purchased Items",
+      }),
+      amount: t.Number({
+        title: "Total Amount of the Transaction",
+        minimum: 0,
+        examples: [49.99],
+      }),
+      orderId: t.String({
+        title: "Order ID from the Payment Provider",
+        minLength: 2,
+        maxLength: 500,
+        examples: ["order_1QMLzA2eZvKYlo2C0q1X3PaX"],
+      }),
+      isReseller: t.Boolean({
+        title: "Indicates if the Transaction is made by a Reseller",
+        default: false,
+      }),
+      details: t.Optional(PurchasedDetails),
+      extraInfo: t.Optional(
+        t.Union([t.Object(t.Any()), t.Null()], {
+          title: "Extra Information from the Payment Provider",
+          default: null,
+        }),
+      ),
+      status: t.Enum(StatusEnum, {
+        title: "Transaction Status",
+        default: StatusEnum.PENDING,
+        examples: [StatusEnum.SUCCESS],
+      }),
+      charId: t.Optional(
+        t.Union(
+          [
+            t.Number({
+              title: "Character ID associated with the Transaction",
+              minimum: 1,
+              examples: [123456],
+            }),
+            t.Null(),
+          ],
+          {
+            title: "Character ID or null if not applicable",
+            default: null,
+          },
+        ),
+      ),
+      promotionId: t.Optional(
+        t.String({
+          title: "Promotion ID (MongoDB ObjectId as string)",
+          examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
+        }),
+      ),
+      userId: t.String({
+        title: "User ID (MongoDB ObjectId as string)",
+        examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
+      }),
+      createdAt: t.Union(
+        [t.String({ title: "Created At", format: "date-time" }), t.Date()],
+        {
+          title: "Creation Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+      updatedAt: t.Union(
+        [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
+        {
+          title: "Update Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+    },
+    {
+      title: "Transaction Details",
+    },
+  );
   export type Details = typeof Details.static;
 }

@@ -161,42 +161,47 @@ export namespace PromotionModel {
   });
   export type PromotionAudit = typeof PromotionAudit.static;
 
-  export const Details = t.Object({
-    id: t.String({
-      title: "Promotion ID (MongoDB ObjectId as string)",
-      examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
-    }),
-    name: t.String({
-      title: "Promotion Name",
-      minLength: 2,
-      maxLength: 100,
-      examples: ["Anniversary 2025", "Valentine's Day 2024"],
-    }),
-    schedule: Schedule,
-    state: t.Enum(StateEnum, {
-      title: "Promotion State",
-      examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
-    }),
-    scope: Scope,
-    lines: t.Array(PromotionLine, {
-      title: "Promotion Product Lines",
-    }),
-    createdAt: t.Union(
-      [t.String({ title: "Created At", format: "date-time" }), t.Date()],
-      {
-        title: "Creation Timestamp",
-        default: new Date().toISOString(),
-      },
-    ),
-    updatedAt: t.Union(
-      [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
-      {
-        title: "Update Timestamp",
-        default: new Date().toISOString(),
-      },
-    ),
-    audit: t.Optional(PromotionAudit),
-  });
+  export const Details = t.Object(
+    {
+      id: t.String({
+        title: "Promotion ID (MongoDB ObjectId as string)",
+        examples: ["64a7f0c2b4d1c2e5f6a7b8c9"],
+      }),
+      name: t.String({
+        title: "Promotion Name",
+        minLength: 2,
+        maxLength: 100,
+        examples: ["Anniversary 2025", "Valentine's Day 2024"],
+      }),
+      schedule: Schedule,
+      state: t.Enum(StateEnum, {
+        title: "Promotion State",
+        examples: [StateEnum.SCHEDULED, StateEnum.ACTIVE],
+      }),
+      scope: Scope,
+      lines: t.Array(PromotionLine, {
+        title: "Promotion Product Lines",
+      }),
+      createdAt: t.Union(
+        [t.String({ title: "Created At", format: "date-time" }), t.Date()],
+        {
+          title: "Creation Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+      updatedAt: t.Union(
+        [t.String({ title: "Updated At", format: "date-time" }), t.Date()],
+        {
+          title: "Update Timestamp",
+          default: new Date().toISOString(),
+        },
+      ),
+      audit: t.Optional(PromotionAudit),
+    },
+    {
+      title: "Promotion Details",
+    },
+  );
   export type Details = typeof Details.static;
 
   export const Create = t.Omit(Details, [

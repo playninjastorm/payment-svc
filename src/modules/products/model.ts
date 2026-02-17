@@ -94,7 +94,9 @@ export namespace ProductModel {
         },
       ),
     },
-    {},
+    {
+      title: "Product Details",
+    },
   );
   export type Details = typeof Details.static;
 
