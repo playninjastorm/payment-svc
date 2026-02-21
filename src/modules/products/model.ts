@@ -1,16 +1,12 @@
 import { t } from "elysia";
 
-export namespace ProductModel {
-  export enum CodeEnum {
-    EMBLEM_ELITE = "emblem_elite",
-    TOKEN_30000 = "token_30000",
-    TOKEN_13500 = "token_13500",
-    TOKEN_5000 = "token_5000",
-    TOKEN_2000 = "token_2000",
-    TOKEN_1000 = "token_1000",
-    TOKEN_500 = "token_500",
-  }
+import { PromotionModel } from "@/modules/promotions/model";
+import {
+  CodeEnum,
+  DiscountTypeEnum,
+} from "@/commons/models/productPromotion.model";
 
+export namespace ProductModel {
   export const PlatformStripe = t.Object({
     productId: t.String({
       title: "Stripe Product ID",
@@ -78,9 +74,9 @@ export namespace ProductModel {
         maxLength: 100,
         examples: ["Token", "Emblem"],
       }),
-      sku: t.Enum(ProductModel.CodeEnum, {
+      sku: t.Enum(CodeEnum, {
         title: "Product SKU",
-        examples: [ProductModel.CodeEnum.TOKEN_30000],
+        examples: [CodeEnum.TOKEN_30000],
       }),
       active: t.Boolean({
         title: "Is Active",
@@ -112,15 +108,20 @@ export namespace ProductModel {
   export type Create = typeof Create.static;
 
   export const Store = t.Object({
-    sku: t.Enum(ProductModel.CodeEnum, {
+    sku: t.Enum(CodeEnum, {
       title: "Product SKU",
-      examples: [ProductModel.CodeEnum.TOKEN_30000],
+      examples: [CodeEnum.TOKEN_30000],
     }),
     display: t.Object({
-      percentOff: t.Number({
-        title: "Percent Off",
+      discountType: t.Enum(DiscountTypeEnum, {
+        title: "Discount Type",
+        examples: [DiscountTypeEnum.PERCENT_OFF, DiscountTypeEnum.AMOUNT_OFF],
+      }),
+      discountValue: t.Number({
+        title: "Discount Value",
+        minimum: 0,
         maximum: 100,
-        examples: [41.18, 40.0],
+        examples: [41.18],
       }),
       label: t.String({
         title: "Discount Label",

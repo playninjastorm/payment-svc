@@ -1,6 +1,10 @@
 import { t } from "elysia";
 
 import { ProductModel } from "@/modules/products/model";
+import {
+  CodeEnum,
+  DiscountTypeEnum,
+} from "@/commons/models/productPromotion.model";
 
 export namespace PromotionModel {
   export enum ScopeModeEnum {
@@ -19,14 +23,14 @@ export namespace PromotionModel {
       t.String({
         title: "Promotion Start DateTime (ISO 8601 string)",
         format: "date-time",
-        examples: ["2024-07-01T00:00:00Z"],
+        examples: ["2026-07-01T00:00:00Z"],
       }),
       t.Date(),
     ]),
     endsAt: t.Union([
       t.String({
         title: "Promotion End DateTime (ISO 8601 string)",
-        examples: ["2024-07-15T23:59:59Z"],
+        examples: ["2026-07-15T23:59:59Z"],
         format: "date-time",
       }),
       t.Date(),
@@ -97,13 +101,17 @@ export namespace PromotionModel {
   export type PromotionLineXsolla = typeof PromotionLineXsolla.static;
 
   export const PromotionLine = t.Object({
-    sku: t.Enum(ProductModel.CodeEnum, {
+    sku: t.Enum(CodeEnum, {
       title: "Product SKU",
-      examples: [ProductModel.CodeEnum.TOKEN_30000],
+      examples: [CodeEnum.TOKEN_30000],
     }),
     discount: t.Object({
-      percentOff: t.Number({
-        title: "Percent Off",
+      discountType: t.Enum(DiscountTypeEnum, {
+        title: "Discount Type",
+        examples: [DiscountTypeEnum.PERCENT_OFF, DiscountTypeEnum.AMOUNT_OFF],
+      }),
+      discountValue: t.Number({
+        title: "Discount Value",
         minimum: 0,
         maximum: 100,
         examples: [41.18],
@@ -158,7 +166,7 @@ export namespace PromotionModel {
         t.String({
           title: "Promotion Activated DateTime (ISO 8601 string)",
           format: "date-time",
-          examples: ["2024-07-01T00:00:00Z"],
+          examples: ["2026-07-01T00:00:00Z"],
         }),
         t.Date(),
         t.Null(),
@@ -168,7 +176,7 @@ export namespace PromotionModel {
       t.Union([
         t.String({
           title: "Promotion Ended DateTime (ISO 8601 string)",
-          examples: ["2024-07-15T23:59:59Z"],
+          examples: ["2026-07-15T23:59:59Z"],
           format: "date-time",
         }),
         t.Date(),
@@ -188,7 +196,7 @@ export namespace PromotionModel {
         title: "Promotion Name",
         minLength: 2,
         maxLength: 100,
-        examples: ["Anniversary 2025", "Valentine's Day 2024"],
+        examples: ["Anniversary 2026", "Valentine's Day 2024"],
       }),
       schedule: Schedule,
       state: t.Enum(StateEnum, {
@@ -221,13 +229,111 @@ export namespace PromotionModel {
   );
   export type Details = typeof Details.static;
 
+  export const CreateRequest = t.Object(
+    {
+      name: t.String({
+        title: "Promotion Name",
+        minLength: 2,
+        maxLength: 100,
+        examples: ["Anniversary 2026", "Valentine's Day 2024"],
+      }),
+      schedule: Schedule,
+      scope: Scope,
+      lines: t.Array(
+        t.Object({
+          sku: t.Enum(CodeEnum, {
+            title: "Product SKU",
+            examples: [CodeEnum.TOKEN_30000],
+          }),
+          discount: t.Object({
+            discountType: t.Enum(DiscountTypeEnum, {
+              title: "Discount Type",
+              examples: [
+                DiscountTypeEnum.PERCENT_OFF,
+                DiscountTypeEnum.AMOUNT_OFF,
+              ],
+            }),
+            discountValue: t.Number({
+              title: "Discount Value",
+              minimum: 0,
+              maximum: 100,
+              examples: [41.18],
+            }),
+          }),
+          platformSync: t.Object({
+            stripe: t.Optional(
+              t.Union(
+                [
+                  t.Object({
+                    priceId: t.String({
+                      title: "Stripe Promotion Price ID",
+                      minLength: 2,
+                      maxLength: 500,
+                      examples: ["price_promo_usd_999"],
+                    }),
+                  }),
+                  t.Null(),
+                ],
+                {
+                  title: "Stripe Promotion Price Info",
+                  default: null,
+                  examples: [
+                    {
+                      priceId: "price_promo_usd_999",
+                    },
+                  ],
+                },
+              ),
+            ),
+            paypal: t.Optional(
+              t.Boolean({
+                title:
+                  "Indicates whether the promotion applies to PayPal or not. This is a Boolean field since this platform does not require additional data.",
+                default: false,
+              }),
+            ),
+            xsolla: t.Optional(
+              t.Union(
+                [
+                  t.Object({
+                    promotionId: t.String({
+                      title: "Xsolla Promotion ID",
+                      minLength: 2,
+                      maxLength: 500,
+                      examples: ["price_1QMLzA2eZvKYlo2C0q1X3PaX"],
+                    }),
+                  }),
+                  t.Null(),
+                ],
+                {
+                  title: "Xsolla Promotion Price Info",
+                  default: null,
+                  examples: [
+                    {
+                      promotionId: "price_1QMLzA2eZvKYlo2C0q1X3PaX",
+                    },
+                  ],
+                },
+              ),
+            ),
+          }),
+        }),
+        {
+          title: "Promotion Product Lines",
+        },
+      ),
+    },
+    {
+      title: "Promotion Creation Payload",
+    },
+  );
+  export type CreateRequest = typeof CreateRequest.static;
+
   export const Create = t.Omit(Details, [
     "id",
-    "state",
+    "audit",
     "createdAt",
     "updatedAt",
-    "activatedAt",
-    "endedAt",
   ]);
   export type Create = typeof Create.static;
 }

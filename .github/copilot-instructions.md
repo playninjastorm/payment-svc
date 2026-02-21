@@ -134,10 +134,10 @@ Cuando llega `endsAt`:
 
 ```json
 {
-  "name": "Anniversary 2025",
+  "name": "Anniversary 2026",
   "schedule": {
-    "startsAt": "2025-08-14T00:00:00Z",
-    "endsAt": "2025-08-21T00:00:00Z"
+    "startsAt": "2026-08-14T00:00:00Z",
+    "endsAt": "2026-08-21T00:00:00Z"
   },
   "state": "SCHEDULED",
   "scope": { "mode": "SKUS" },

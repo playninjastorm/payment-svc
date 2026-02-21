@@ -97,16 +97,15 @@ const promotionLinesSchema = new Schema<PromotionModel.PromotionLine>(
       required: true,
     },
     discount: {
-      amountOff: {
-        type: Number,
+      discountType: {
+        type: String,
+        enum: PromotionModel.DiscountTypeEnum,
         required: true,
-        min: 0,
       },
-      percentOff: {
+      discountValue: {
         type: Number,
         required: true,
         min: 0,
-        max: 100,
       },
     },
     platformSync: {

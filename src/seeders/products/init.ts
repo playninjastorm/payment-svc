@@ -1,3 +1,4 @@
+import { CodeEnum } from "@/commons/models/productPromotion.model";
 import { connectDb } from "@/core/db";
 import { logger } from "@/core/logger";
 import { ProductModel } from "@/modules/products/model";
@@ -6,7 +7,7 @@ import ProductRepository from "@/modules/products/repository";
 const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Emblem",
-    sku: ProductModel.CodeEnum.EMBLEM_ELITE,
+    sku: CodeEnum.EMBLEM_ELITE,
     active: true,
     platforms: {
       stripe: {
@@ -19,14 +20,14 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         basePrice: 9.99,
       },
       xsolla: {
-        sku: ProductModel.CodeEnum.EMBLEM_ELITE,
+        sku: CodeEnum.EMBLEM_ELITE,
         basePrice: 10.99,
       },
     },
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_30000,
+    sku: CodeEnum.TOKEN_30000,
     active: true,
     platforms: {
       stripe: {
@@ -39,14 +40,14 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         basePrice: 49.99,
       },
       xsolla: {
-        sku: ProductModel.CodeEnum.TOKEN_30000,
+        sku: CodeEnum.TOKEN_30000,
         basePrice: 53.99,
       },
     },
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_13500,
+    sku: CodeEnum.TOKEN_13500,
     active: true,
     platforms: {
       stripe: {
@@ -59,14 +60,14 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         basePrice: 24.99,
       },
       xsolla: {
-        sku: ProductModel.CodeEnum.TOKEN_13500,
+        sku: CodeEnum.TOKEN_13500,
         basePrice: 26.99,
       },
     },
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_5000,
+    sku: CodeEnum.TOKEN_5000,
     active: true,
     platforms: {
       stripe: {
@@ -79,14 +80,14 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         basePrice: 9.99,
       },
       xsolla: {
-        sku: ProductModel.CodeEnum.TOKEN_5000,
+        sku: CodeEnum.TOKEN_5000,
         basePrice: 10.99,
       },
     },
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_2000,
+    sku: CodeEnum.TOKEN_2000,
     active: true,
     platforms: {
       stripe: {
@@ -99,14 +100,14 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         basePrice: 4.99,
       },
       xsolla: {
-        sku: ProductModel.CodeEnum.TOKEN_2000,
+        sku: CodeEnum.TOKEN_2000,
         basePrice: 5.99,
       },
     },
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_1000,
+    sku: CodeEnum.TOKEN_1000,
     active: true,
     platforms: {
       stripe: {
@@ -123,7 +124,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   },
   {
     name: "Token",
-    sku: ProductModel.CodeEnum.TOKEN_500,
+    sku: CodeEnum.TOKEN_500,
     active: true,
     platforms: {
       stripe: {

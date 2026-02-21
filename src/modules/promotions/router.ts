@@ -43,7 +43,7 @@ export const promotionsRouter = new Elysia({
       };
     },
     {
-      body: PromotionModel.Create,
+      body: PromotionModel.CreateRequest,
       response: {
         201: HttpDTO.ResponseData(PromotionModel.Details),
         422: HttpDTO.ResponseValidationError,

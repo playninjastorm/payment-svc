@@ -1,12 +1,10 @@
+import { DiscountTypeEnum } from "@/commons/models/productPromotion.model";
 import { ProductModel } from "@/modules/products/model";
 import ProductRepository from "@/modules/products/repository";
 import { PromotionModel } from "@/modules/promotions/model";
 import { PromotionRepository } from "@/modules/promotions/repository";
 
 export abstract class ProductService {
-  private static DEFAULT_OFFER_PERCENT_OFF = 33;
-  private static DEFAULT_OFFER_LABEL = "33% off";
-
   static async list() {
     const items = await ProductRepository.list();
 
@@ -19,22 +17,37 @@ export abstract class ProductService {
     const products = await PromotionRepository.listActiveProducts();
 
     const storeItems: ProductModel.Store[] = [];
-    // TODO: Usar PromotionsRepository para buscar las promociones activas y aplicarlas a los productos
+
+    const DISCOUNT_DEFAULT = {
+      discountType: DiscountTypeEnum.PERCENT_OFF,
+      discountValue: 33,
+    };
+    const DEFAULT_OFFER_LABEL = `${DISCOUNT_DEFAULT.discountValue}% off`;
 
     for (const item of items) {
       const promotion = products.find((p) => p.sku === item.sku);
-      // TODO: EN XSOLLA TIENEN UN PRECIO DIFERENTE, PERO LOS PRODUCTS QUE PUSO JUNIOR TIENEN UN SOLO PRICE
-      // TODO: Junior dice para dejar un solo price
+
+      const discount = promotion ? promotion.discount : DISCOUNT_DEFAULT;
+
+      let offerLabel = DEFAULT_OFFER_LABEL;
+
+      if (promotion) {
+        if (promotion.discount.discountType === DiscountTypeEnum.PERCENT_OFF) {
+          offerLabel = `${promotion.discount.discountValue}% off`;
+        } else if (
+          promotion.discount.discountType === DiscountTypeEnum.AMOUNT_OFF
+        ) {
+          offerLabel = `$${promotion.discount.discountValue} off`;
+        } else {
+          offerLabel = "";
+        }
+      }
 
       storeItems.push({
         sku: item.sku,
         display: {
-          percentOff:
-            promotion?.discount.percentOff ??
-            ProductService.DEFAULT_OFFER_PERCENT_OFF,
-          label: promotion?.discount.percentOff
-            ? `${promotion?.discount.percentOff}% off`
-            : ProductService.DEFAULT_OFFER_LABEL,
+          ...discount,
+          label: offerLabel,
           prices: {
             stripe:
               promotion?.platformSync.stripe?.finalPrice ??
