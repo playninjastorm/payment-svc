@@ -1,8 +1,9 @@
 import { ListOptions } from "@/commons/interfaces/interface.types";
+import { DiscountTypeEnum } from "@/commons/models/productPromotion.model";
+import { ServiceError } from "@/commons/utils/errors.utils";
+import { ProductRepository } from "@/modules/products/repository";
 import { PromotionModel } from "@/modules/promotions/model";
 import { PromotionRepository } from "@/modules/promotions/repository";
-import ProductRepository from "@/modules/products/repository";
-import { DiscountTypeEnum } from "@/commons/models/productPromotion.model";
 
 export abstract class PromotionService {
   static async list({
@@ -36,6 +37,18 @@ export abstract class PromotionService {
   }
 
   static async create(payload: PromotionModel.CreateRequest) {
+    const promotionConflict = await PromotionRepository.findConflict(
+      new Date(payload.schedule.startsAt),
+      new Date(payload.schedule.endsAt),
+    );
+
+    if (promotionConflict) {
+      throw new ServiceError(
+        `This promotion conflicts with promotion ${promotionConflict.name} (ID: ${promotionConflict.id}). Therefore, it cannot be created; please modify your schedule.`,
+        409,
+      );
+    }
+
     const products = await ProductRepository.list();
 
     const lines: PromotionModel.PromotionLine[] = [];
@@ -44,17 +57,17 @@ export abstract class PromotionService {
       const product = products.find((p) => p.sku === line.sku);
 
       if (!product) {
-        throw new Error(`Product with SKU ${line.sku} not found`);
+        throw new ServiceError(`Product with SKU ${line.sku} not found`);
       }
 
       // Exist platform sync configuration for the line, but the product does not have the corresponding platform configured.
       if (line.platformSync.stripe && !product.platforms.stripe) {
-        throw new Error(
+        throw new ServiceError(
           `Product with SKU ${line.sku} does not have a Stripe platform configured`,
         );
       }
       if (line.platformSync.xsolla && !product.platforms.xsolla) {
-        throw new Error(
+        throw new ServiceError(
           `Product with SKU ${line.sku} does not have a Xsolla platform configured`,
         );
       }
@@ -74,7 +87,7 @@ export abstract class PromotionService {
       }
 
       let platformPaypal: PromotionModel.PromotionLinePaypal | null = null;
-      if (line.platformSync.paypal && product.platforms.paypal) {
+      if (product.platforms.paypal) {
         platformPaypal = {
           baseSnapshot: product.platforms.paypal?.basePrice,
           finalPrice: this.calculateFinalPrice(
@@ -116,8 +129,6 @@ export abstract class PromotionService {
     };
 
     const data = await PromotionRepository.create(promotion);
-
-    // TODO: Solo puedes crear promociones si la fecha de schedule no choca con otra ya existente.
 
     return data;
   }

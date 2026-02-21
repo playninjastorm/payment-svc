@@ -59,6 +59,13 @@ export abstract class PromotionRepository {
     });
   }
 
+  static async findConflict(newStart: Date, newEnd: Date) {
+    return await PromotionDB.findOne({
+      "schedule.startsAt": { $lt: newEnd },
+      "schedule.endsAt": { $gt: newStart },
+    });
+  }
+
   static async updateState(id: string, state: PromotionModel.StateEnum) {
     const update: Record<string, any> = { state };
 

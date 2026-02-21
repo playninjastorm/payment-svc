@@ -1,8 +1,12 @@
 import { Schema, InferSchemaType, model } from "mongoose";
 
-import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
+import { DEFAULT_OPTIONS_SCHEMA } from "@/commons/utils/db.utils";
 import { PromotionModel } from "@/modules/promotions/model";
 import { ProductModel } from "@/modules/products/model";
+import {
+  CodeEnum,
+  DiscountTypeEnum,
+} from "@/commons/models/productPromotion.model";
 
 const promotionScheduleSchema = new Schema<PromotionModel.Schedule>(
   {
@@ -93,13 +97,13 @@ const promotionLinesSchema = new Schema<PromotionModel.PromotionLine>(
   {
     sku: {
       type: String,
-      enum: ProductModel.CodeEnum,
+      enum: CodeEnum,
       required: true,
     },
     discount: {
       discountType: {
         type: String,
-        enum: PromotionModel.DiscountTypeEnum,
+        enum: DiscountTypeEnum,
         required: true,
       },
       discountValue: {

@@ -1,6 +1,6 @@
 import { Schema, InferSchemaType, model, Types } from "mongoose";
 
-import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
+import { DEFAULT_OPTIONS_SCHEMA } from "@/commons/utils/db.utils";
 import { TransactionModel } from "@/modules/transactions/model";
 
 const PurchasedItemSchema = new Schema(

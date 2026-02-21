@@ -1,7 +1,8 @@
 import { Schema, InferSchemaType, model } from "mongoose";
 
-import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
+import { DEFAULT_OPTIONS_SCHEMA } from "@/commons/utils/db.utils";
 import { ProductModel } from "@/modules/products/model";
+import { CodeEnum } from "@/commons/models/productPromotion.model";
 
 const productPlatormStripeSchema = new Schema<ProductModel.PlatformStripe>(
   {
@@ -77,6 +78,7 @@ const productSchema = new Schema<ProductModel.Details>(
     },
     sku: {
       type: String,
+      enum: CodeEnum,
       required: true,
     },
     active: {

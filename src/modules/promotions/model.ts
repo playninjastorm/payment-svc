@@ -285,13 +285,6 @@ export namespace PromotionModel {
                 },
               ),
             ),
-            paypal: t.Optional(
-              t.Boolean({
-                title:
-                  "Indicates whether the promotion applies to PayPal or not. This is a Boolean field since this platform does not require additional data.",
-                default: false,
-              }),
-            ),
             xsolla: t.Optional(
               t.Union(
                 [

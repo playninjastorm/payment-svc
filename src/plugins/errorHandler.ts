@@ -1,5 +1,7 @@
 import Elysia from "elysia";
 
+import { ServiceError } from "@/commons/utils/errors.utils";
+
 function isEnumSchema(schema: any): boolean {
   if (!schema) return false;
 
@@ -23,9 +25,19 @@ function getEnumValues(schema: any): string[] {
 }
 
 export const errorHandler = () => {
-  return new Elysia({ name: "error-handler" }).onError(
-    { as: "global" },
-    ({ code, error, set }) => {
+  return new Elysia({ name: "error-handler" })
+    .error({
+      ServiceError,
+    })
+    .onError({ as: "global" }, ({ code, error, set }) => {
+      if (code === "ServiceError") {
+        set.status = error.statusCode || 400;
+        return {
+          code: set.status,
+          message: error.message,
+        };
+      }
+
       if (code === "VALIDATION") {
         let code = 400;
         let message = "Internal error";
@@ -45,8 +57,6 @@ export const errorHandler = () => {
         }
 
         set.status = code;
-
-        console.log(error.all);
 
         const errors = error.all.map((err: any) => {
           const field = err.path.slice(1).replaceAll("/", ".");
@@ -83,6 +93,5 @@ export const errorHandler = () => {
         code: set.status,
         message: "Internal Server Error",
       };
-    },
-  );
+    });
 };
