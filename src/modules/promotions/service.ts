@@ -60,18 +60,6 @@ export abstract class PromotionService {
         throw new ServiceError(`Product with SKU ${line.sku} not found`);
       }
 
-      // Exist platform sync configuration for the line, but the product does not have the corresponding platform configured.
-      if (line.platformSync.stripe && !product.platforms.stripe) {
-        throw new ServiceError(
-          `Product with SKU ${line.sku} does not have a Stripe platform configured`,
-        );
-      }
-      if (line.platformSync.xsolla && !product.platforms.xsolla) {
-        throw new ServiceError(
-          `Product with SKU ${line.sku} does not have a Xsolla platform configured`,
-        );
-      }
-
       // Calculate the final price for each platform if the line has a platform sync configuration and the product has the corresponding platform configured.
       let platformStripe: PromotionModel.PromotionLineStripe | null = null;
       if (line.platformSync.stripe && product.platforms.stripe) {

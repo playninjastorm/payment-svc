@@ -1,6 +1,5 @@
 import { t } from "elysia";
 
-import { ProductModel } from "@/modules/products/model";
 import {
   CodeEnum,
   DiscountTypeEnum,
