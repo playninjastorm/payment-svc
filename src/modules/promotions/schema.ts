@@ -4,7 +4,7 @@ import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
 import { PromotionModel } from "@/modules/promotions/model";
 import { ProductModel } from "@/modules/products/model";
 
-const promotionScheduleSchema = new Schema(
+const promotionScheduleSchema = new Schema<PromotionModel.Schedule>(
   {
     startsAt: {
       type: Date,
@@ -18,7 +18,7 @@ const promotionScheduleSchema = new Schema(
   { _id: false },
 );
 
-const promotionScopeSchema = new Schema(
+const promotionScopeSchema = new Schema<PromotionModel.Scope>(
   {
     mode: {
       type: String,
@@ -30,22 +30,71 @@ const promotionScopeSchema = new Schema(
   { _id: false },
 );
 
-const promotionLinesSchema = new Schema(
+const promotionLinesStripeSchema =
+  new Schema<PromotionModel.PromotionLineStripe>(
+    {
+      priceId: {
+        type: String,
+        required: true,
+      },
+      baseSnapshot: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      finalPrice: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+    },
+    { _id: false },
+  );
+
+const promotionLinesPaypalSchema =
+  new Schema<PromotionModel.PromotionLinePaypal>(
+    {
+      baseSnapshot: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      finalPrice: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+    },
+    { _id: false },
+  );
+
+const promotionLinesXsollaSchema =
+  new Schema<PromotionModel.PromotionLineXsolla>(
+    {
+      promotionId: {
+        type: String,
+        required: true,
+      },
+      baseSnapshot: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+      finalPrice: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+    },
+    { _id: false },
+  );
+
+const promotionLinesSchema = new Schema<PromotionModel.PromotionLine>(
   {
     sku: {
       type: String,
       enum: ProductModel.CodeEnum,
       required: true,
-    },
-    finalPrice: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
-    baseSnapshot: {
-      type: Number,
-      required: true,
-      min: 0,
     },
     discount: {
       amountOff: {
@@ -62,24 +111,16 @@ const promotionLinesSchema = new Schema(
     },
     platformSync: {
       stripe: {
-        priceId: {
-          type: String,
-          default: null,
-        },
+        type: promotionLinesStripeSchema,
+        default: null,
       },
       paypal: {
-        type: String,
+        type: promotionLinesPaypalSchema,
         default: null,
       },
       xsolla: {
-        promotionId: {
-          type: String,
-          default: null,
-        },
-        amountOff: {
-          type: Number,
-          default: true,
-        },
+        type: promotionLinesXsollaSchema,
+        default: null,
       },
     },
   },

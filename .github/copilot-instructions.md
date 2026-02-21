@@ -107,18 +107,20 @@ Cuando llega `endsAt`:
 {
   "sku": "token_30000",
   "name": "30,000 Tokens",
-  "basePrice": 84.99,
   "active": true,
   "platforms": {
     "stripe": {
       "productId": "prod_abc123",
-      "defaultPriceId": "price_base_usd_123"
+      "defaultPriceId": "price_base_usd_123",
+      "basePrice": 74.99
     },
     "paypal": {
-      "productId": "PROD-XYZ"
+      "productId": "PROD-XYZ",
+      "basePrice": 74.99
     },
     "xsolla": {
-      "sku": "token_30000"
+      "sku": "token_30000",
+      "basePrice": 84.99
     }
   },
   "createdAt": "2025-10-20T00:00:00Z",
@@ -142,20 +144,19 @@ Cuando llega `endsAt`:
   "lines": [
     {
       "sku": "token_30000",
-      "finalPrice": 49.99,
-      "baseSnapshot": 84.99,
       "discount": {
         "amountOff": 35.0,
         "percentOff": 41.18
       },
       "platformSync": {
         "stripe": {
-          "priceId": "price_promo_usd_999"
+          "priceId": "price_promo_usd_999",
+          "price": 49.99
         },
         "paypal": {},
         "xsolla": {
-          "promotionId": "",
-          "amountOff": 35.0
+          "promotionId": "example_promo_id",
+          "price": 59.9
         }
       }
     }
@@ -234,11 +235,22 @@ Ejemplo del objeto retornado en la tienda:
 {
   "sku": "token_30000",
   "display": {
-    "base": 84.99,
-    "final": 49.99,
-    "amountOff": 35.0,
-    "percentOff": 41.18,
-    "label": "40% OFF"
+    "percentOff": 40,
+    "label": "40% OFF",
+    "prices": {
+      "stripe": {
+        "base": 49.99,
+        "price": 30.99
+      },
+      "paypal": {
+        "base": 49.99,
+        "price": 30.99
+      },
+      "xsolla": {
+        "base": 59.99,
+        "price": 35.99
+      }
+    }
   }
 }
 ```

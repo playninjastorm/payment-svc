@@ -29,6 +29,8 @@ export const productsRouter = new Elysia({
   .get(
     "/store",
     async () => {
+      // TODO: Query params para separar por plataforma
+
       const items = await ProductService.storeList();
 
       return {

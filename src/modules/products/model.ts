@@ -24,6 +24,10 @@ export namespace ProductModel {
       maxLength: 500,
       examples: ["price_1QMLyyFWwrZP60SHbsqvLpKa"],
     }),
+    basePrice: t.Number({
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
   });
   export type PlatformStripe = typeof PlatformStripe.static;
 
@@ -34,6 +38,10 @@ export namespace ProductModel {
       maxLength: 500,
       examples: ["PROD-30000"],
     }),
+    basePrice: t.Number({
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
   });
   export type PlatformPaypal = typeof PlatformPaypal.static;
 
@@ -43,6 +51,10 @@ export namespace ProductModel {
       minLength: 2,
       maxLength: 500,
       examples: [CodeEnum.TOKEN_30000],
+    }),
+    basePrice: t.Number({
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
     }),
   });
   export type PlatformXsolla = typeof PlatformXsolla.static;
@@ -69,10 +81,6 @@ export namespace ProductModel {
       sku: t.Enum(ProductModel.CodeEnum, {
         title: "Product SKU",
         examples: [ProductModel.CodeEnum.TOKEN_30000],
-      }),
-      basePrice: t.Number({
-        minimum: 0,
-        examples: [49.99, 24.99, 9.99],
       }),
       active: t.Boolean({
         title: "Is Active",
@@ -109,20 +117,6 @@ export namespace ProductModel {
       examples: [ProductModel.CodeEnum.TOKEN_30000],
     }),
     display: t.Object({
-      base: t.Number({
-        title: "Base Price",
-        minimum: 0,
-        examples: [84.99, 49.99],
-      }),
-      final: t.Number({
-        title: "Final Price",
-        minimum: 0,
-        examples: [49.99, 29.99],
-      }),
-      amountOff: t.Number({
-        title: "Amount Off",
-        examples: [35.0, 20.0],
-      }),
       percentOff: t.Number({
         title: "Percent Off",
         maximum: 100,
@@ -133,6 +127,23 @@ export namespace ProductModel {
         minLength: 2,
         maxLength: 50,
         examples: ["40% OFF", "20% OFF"],
+      }),
+      prices: t.Object({
+        stripe: t.Optional(
+          t.Union([t.Number({ minimum: 0 }), t.Null()], {
+            title: "Stripe Price",
+          }),
+        ),
+        paypal: t.Optional(
+          t.Union([t.Number({ minimum: 0 }), t.Null()], {
+            title: "PayPal Price",
+          }),
+        ),
+        xsolla: t.Optional(
+          t.Union([t.Number({ minimum: 0 }), t.Null()], {
+            title: "Xsolla Price",
+          }),
+        ),
       }),
     }),
   });

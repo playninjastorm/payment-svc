@@ -3,7 +3,7 @@ import { Schema, InferSchemaType, model } from "mongoose";
 import { DEFAULT_OPTIONS_SCHEMA } from "@/utils/db";
 import { ProductModel } from "@/modules/products/model";
 
-const productPlatormStripeSchema = new Schema(
+const productPlatormStripeSchema = new Schema<ProductModel.PlatformStripe>(
   {
     productId: {
       type: String,
@@ -15,31 +15,43 @@ const productPlatormStripeSchema = new Schema(
       required: true,
       unique: true,
     },
+    basePrice: {
+      type: Number,
+      required: true,
+    },
   },
   { _id: false },
 );
 
-const productPlatformPaypalSchema = new Schema(
+const productPlatformPaypalSchema = new Schema<ProductModel.PlatformPaypal>(
   {
     productId: {
       type: String,
       required: true,
     },
-  },
-  { _id: false },
-);
-
-const productPlatformXsollaSchema = new Schema(
-  {
-    sku: {
-      type: String,
+    basePrice: {
+      type: Number,
       required: true,
     },
   },
   { _id: false },
 );
 
-const productPlatformsSchema = new Schema(
+const productPlatformXsollaSchema = new Schema<ProductModel.PlatformXsolla>(
+  {
+    sku: {
+      type: String,
+      required: true,
+    },
+    basePrice: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false },
+);
+
+const productPlatformsSchema = new Schema<ProductModel.Platforms>(
   {
     stripe: {
       type: productPlatormStripeSchema,
@@ -65,10 +77,6 @@ const productSchema = new Schema<ProductModel.Details>(
     },
     sku: {
       type: String,
-      required: true,
-    },
-    basePrice: {
-      type: Number,
       required: true,
     },
     active: {

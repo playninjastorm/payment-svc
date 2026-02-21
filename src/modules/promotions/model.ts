@@ -42,27 +42,66 @@ export namespace PromotionModel {
   });
   export type Scope = typeof Scope.static;
 
+  export const PromotionLineStripe = t.Object({
+    priceId: t.String({
+      title: "Stripe Promotion Price ID",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["price_promo_usd_999"],
+    }),
+    baseSnapshot: t.Number({
+      title: "Base Price Snapshot Before Discount",
+      minimum: 0,
+      examples: [49.99],
+    }),
+    finalPrice: t.Number({
+      title: "Final Price After Discount",
+      minimum: 0,
+      examples: [30.99],
+    }),
+  });
+  export type PromotionLineStripe = typeof PromotionLineStripe.static;
+
+  export const PromotionLinePaypal = t.Object({
+    baseSnapshot: t.Number({
+      title: "Base Price Snapshot Before Discount",
+      minimum: 0,
+      examples: [49.99],
+    }),
+    finalPrice: t.Number({
+      title: "Final Price After Discount",
+      minimum: 0,
+      examples: [30.99],
+    }),
+  });
+  export type PromotionLinePaypal = typeof PromotionLinePaypal.static;
+
+  export const PromotionLineXsolla = t.Object({
+    promotionId: t.String({
+      title: "Xsolla Promotion ID",
+      minLength: 2,
+      maxLength: 500,
+      examples: ["price_1QMLzA2eZvKYlo2C0q1X3PaX"],
+    }),
+    baseSnapshot: t.Number({
+      title: "Base Price Snapshot Before Discount",
+      minimum: 0,
+      examples: [49.99],
+    }),
+    finalPrice: t.Number({
+      title: "Final Price After Discount",
+      minimum: 0,
+      examples: [30.99],
+    }),
+  });
+  export type PromotionLineXsolla = typeof PromotionLineXsolla.static;
+
   export const PromotionLine = t.Object({
     sku: t.Enum(ProductModel.CodeEnum, {
       title: "Product SKU",
       examples: [ProductModel.CodeEnum.TOKEN_30000],
     }),
-    finalPrice: t.Number({
-      title: "Final Price After Discount",
-      minimum: 0,
-      examples: [49.99],
-    }),
-    baseSnapshot: t.Number({
-      title: "Base Price Snapshot Before Discount",
-      minimum: 0,
-      examples: [84.99],
-    }),
     discount: t.Object({
-      amountOff: t.Number({
-        title: "Amount Off",
-        minimum: 0,
-        examples: [35.0],
-      }),
       percentOff: t.Number({
         title: "Percent Off",
         minimum: 0,
@@ -72,64 +111,42 @@ export namespace PromotionModel {
     }),
     platformSync: t.Object({
       stripe: t.Optional(
-        t.Union(
-          [
-            t.Object({
-              priceId: t.String({
-                title: "Stripe Promotion Price ID",
-                minLength: 2,
-                maxLength: 500,
-                examples: ["price_promo_usd_999"],
-              }),
-            }),
-            t.Null(),
+        t.Union([PromotionModel.PromotionLineStripe, t.Null()], {
+          title: "Stripe Promotion Price Info",
+          default: null,
+          examples: [
+            {
+              priceId: "price_promo_usd_999",
+              baseSnapshot: 49.99,
+              finalPrice: 30.99,
+            },
           ],
-          {
-            title: "Stripe Promotion Price Info",
-            default: null,
-            examples: [
-              {
-                priceId: "price_promo_usd_999",
-              },
-            ],
-          },
-        ),
+        }),
       ),
       paypal: t.Optional(
-        t.Union([t.Object({}), t.Null()], {
+        t.Union([PromotionModel.PromotionLinePaypal, t.Null()], {
           title: "Paypal Promotion Price Info",
           default: null,
+          examples: [
+            {
+              baseSnapshot: 49.99,
+              finalPrice: 30.99,
+            },
+          ],
         }),
       ),
       xsolla: t.Optional(
-        t.Union(
-          [
-            t.Object({
-              promotionId: t.String({
-                title: "Xsolla Promotion ID",
-                minLength: 2,
-                maxLength: 500,
-                examples: ["price_1QMLzA2eZvKYlo2C0q1X3PaX"],
-              }),
-              amountOff: t.Number({
-                title: "Amount Off for Xsolla",
-                minimum: 0,
-                examples: [35.0],
-              }),
-            }),
-            t.Null(),
+        t.Union([PromotionModel.PromotionLineXsolla, t.Null()], {
+          title: "Xsolla Promotion Price Info",
+          default: null,
+          examples: [
+            {
+              promotionId: "price_1QMLzA2eZvKYlo2C0q1X3PaX",
+              baseSnapshot: 59.99,
+              finalPrice: 35.99,
+            },
           ],
-          {
-            title: "Xsolla Promotion Price Info",
-            default: null,
-            examples: [
-              {
-                promotionId: "price_1QMLzA2eZvKYlo2C0q1X3PaX",
-                amountOff: 35.0,
-              },
-            ],
-          },
-        ),
+        }),
       ),
     }),
   });

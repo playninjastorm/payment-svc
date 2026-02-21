@@ -31,6 +31,22 @@ export abstract class PromotionRepository {
     };
   }
 
+  static async listActiveProducts() {
+    const cursor = await PromotionDB.find({
+      state: PromotionModel.StateEnum.ACTIVE,
+    });
+
+    const products: PromotionModel.PromotionLine[] = [];
+
+    for (const promotion of cursor) {
+      for (const line of promotion.lines) {
+        products.push(line);
+      }
+    }
+
+    return products;
+  }
+
   static async create(promotion: PromotionModel.Create) {
     return await PromotionDB.create(promotion);
   }
