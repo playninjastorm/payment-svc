@@ -66,6 +66,17 @@ export abstract class PromotionRepository {
     });
   }
 
+  static async findActiveOutOfSchedule(date: Date) {
+    // date < startsAt OR date >= endsAt
+    return await PromotionDB.find({
+      state: PromotionModel.StateEnum.ACTIVE,
+      $or: [
+        { "schedule.startsAt": { $gt: date } },
+        { "schedule.endsAt": { $lte: date } },
+      ],
+    });
+  }
+
   static async updateState(id: string, state: PromotionModel.StateEnum) {
     const update: Record<string, any> = { state };
 

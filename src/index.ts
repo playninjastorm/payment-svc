@@ -47,6 +47,23 @@ const app = new Elysia()
       },
     }),
   )
+  .use(
+    cron({
+      name: PromotionJob.JOB_DEACTIVATE_SCHEDULED_NAME,
+      pattern: "0 * * * * *",
+      async run() {
+        paymentQueue.add(
+          PromotionJob.JOB_DEACTIVATE_SCHEDULED_NAME,
+          {},
+          {
+            removeOnComplete: true,
+            attempts: 3,
+            backoff: { type: "exponential", delay: 1000 },
+          },
+        );
+      },
+    }),
+  )
   .use(errorHandler())
   .get(
     "/",

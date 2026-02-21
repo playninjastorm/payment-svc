@@ -21,6 +21,11 @@ export const worker = new Worker(
       return;
     }
 
+    if (job.name === PromotionJob.JOB_DEACTIVATE_SCHEDULED_NAME) {
+      PromotionJob.deactivateScheduledPromotions();
+      return;
+    }
+
     logger.warn(
       {
         worker: WORKER_QUEUE_NAME,

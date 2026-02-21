@@ -27,10 +27,24 @@ export abstract class PromotionService {
     return data;
   }
 
+  static async findActiveOutOfSchedule(date: Date) {
+    const data = await PromotionRepository.findActiveOutOfSchedule(date);
+    return data;
+  }
+
   static async activatePromotion(id: string) {
     const data = await PromotionRepository.updateState(
       id,
       PromotionModel.StateEnum.ACTIVE,
+    );
+
+    return data;
+  }
+
+  static async deactivatePromotion(id: string) {
+    const data = await PromotionRepository.updateState(
+      id,
+      PromotionModel.StateEnum.ENDED,
     );
 
     return data;
