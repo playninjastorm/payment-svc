@@ -11,8 +11,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLxzFWwrZP60SHpXSznUl1",
-        defaultPriceId: "price_1QMLxzFWwrZP60SHpXSznUl1",
+        productId: "prod_REnSLtxehaVNAy",
+        defaultPriceId: "price_1QMJrfFWwrZP60SHYQSm9xym",
         basePrice: 9.99,
       },
       paypal: {
@@ -31,8 +31,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLyvFWwrZP60SHXerlkn51",
-        defaultPriceId: "price_1QMLyvFWwrZP60SHXerlkn51",
+        productId: "prod_REnMHsd9VcHRsv",
+        defaultPriceId: "price_1QMJm5FWwrZP60SHmfCAHJOr",
         basePrice: 49.99,
       },
       paypal: {
@@ -51,8 +51,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLyyFWwrZP60SHbsqvLpKa",
-        defaultPriceId: "price_1QMLyyFWwrZP60SHbsqvLpKa",
+        productId: "prod_REnIHi1tQydavb",
+        defaultPriceId: "price_1QMJiOFWwrZP60SHjq6N9Zgj",
         basePrice: 24.99,
       },
       paypal: {
@@ -71,8 +71,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLz1FWwrZP60SHGT0utRlM",
-        defaultPriceId: "price_1QMLz1FWwrZP60SHGT0utRlM",
+        productId: "prod_REnHYWjMhECR59",
+        defaultPriceId: "price_1QMJgmFWwrZP60SH7rCwkyks",
         basePrice: 9.99,
       },
       paypal: {
@@ -91,8 +91,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLz5FWwrZP60SH2DUYUill",
-        defaultPriceId: "price_1QMLz5FWwrZP60SH2DUYUill",
+        productId: "prod_R34ReF3mnW2aZy",
+        defaultPriceId: "price_1QAyIwFWwrZP60SHUovIyWL0",
         basePrice: 4.99,
       },
       paypal: {
@@ -111,8 +111,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLz7FWwrZP60SHIBX8DtZP",
-        defaultPriceId: "price_1QMLz7FWwrZP60SHIBX8DtZP",
+        productId: "prod_REnFdQyl6egcsw",
+        defaultPriceId: "price_1QMJerFWwrZP60SHQ0mU0DF0",
         basePrice: 2.99,
       },
       paypal: {
@@ -128,8 +128,8 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
     active: true,
     platforms: {
       stripe: {
-        productId: "price_1QMLzAFWwrZP60SHcsfNxnYi",
-        defaultPriceId: "price_1QMLzAFWwrZP60SHcsfNxnYi",
+        productId: "prod_REnB3RY9l39ePm",
+        defaultPriceId: "price_1QMJbMFWwrZP60SHQNBwVWDZ",
         basePrice: 1.99,
       },
       paypal: null,

@@ -9,5 +9,6 @@ declare module "bun" {
     REDIS_USERNAME: string;
     REDIS_PASSWORD: string;
     REDIS_DB: number;
+    STRIPE_API_KEY: string;
   }
 }

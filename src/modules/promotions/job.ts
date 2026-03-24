@@ -37,7 +37,7 @@ export abstract class PromotionJob {
     }
 
     for (const promo of promotionsToDeactivate) {
-      await PromotionService.deactivatePromotion(promo.id);
+      await PromotionService.deactivatePromotion(promo);
       logger.info(
         { job: this.JOB_DEACTIVATE_SCHEDULED_NAME },
         `Deactivating promotion: ${promo.name}`,

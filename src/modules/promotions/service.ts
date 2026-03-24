@@ -1,6 +1,7 @@
 import { ListOptions } from "@/commons/interfaces/interface.types";
 import { DiscountTypeEnum } from "@/commons/models/productPromotion.model";
 import { ServiceError } from "@/commons/utils/errors.utils";
+import { stripe } from "@/core/stripe";
 import { ProductRepository } from "@/modules/products/repository";
 import { PromotionModel } from "@/modules/promotions/model";
 import { PromotionRepository } from "@/modules/promotions/repository";
@@ -41,10 +42,13 @@ export abstract class PromotionService {
     return data;
   }
 
-  static async deactivatePromotion(id: string) {
+  static async deactivatePromotion(promotion: PromotionModel.Details) {
+    const newLines = await this.deleteStripeCoupons(promotion);
+
     const data = await PromotionRepository.updateState(
-      id,
+      promotion.id,
       PromotionModel.StateEnum.ENDED,
+      newLines,
     );
 
     return data;
@@ -77,39 +81,52 @@ export abstract class PromotionService {
       // Calculate the final price for each platform if the line has a platform sync configuration and the product has the corresponding platform configured.
       let platformStripe: PromotionModel.PromotionLineStripe | null = null;
       if (line.platformSync.stripe && product.platforms.stripe) {
+        const stripePriceBreakdown = this.calculatePriceBreakdown(
+          product.platforms.stripe.basePrice,
+          line.discount.discountType,
+          line.discount.discountValue,
+        );
+
+        const stripeCoupon = await stripe.coupons.create({
+          amount_off: stripePriceBreakdown.discountAmount * 100, // Stripe expects amounts in cents
+          name: payload.name,
+          currency: "usd",
+        });
+
         platformStripe = {
-          priceId: line.platformSync.stripe.priceId,
+          couponId: stripeCoupon.id,
           baseSnapshot: product.platforms.stripe?.basePrice,
-          finalPrice: this.calculateFinalPrice(
-            product.platforms.stripe.basePrice,
-            line.discount.discountType,
-            line.discount.discountValue,
-          ),
+          finalPrice: stripePriceBreakdown.finalPrice,
+          redeemedHistory: [],
         };
       }
 
       let platformPaypal: PromotionModel.PromotionLinePaypal | null = null;
-      if (product.platforms.paypal) {
+      if (line.platformSync.paypal && product.platforms.paypal) {
+        const paypalPriceBreakdown = this.calculatePriceBreakdown(
+          product.platforms.paypal.basePrice,
+          line.discount.discountType,
+          line.discount.discountValue,
+        );
+
         platformPaypal = {
           baseSnapshot: product.platforms.paypal?.basePrice,
-          finalPrice: this.calculateFinalPrice(
-            product.platforms.paypal.basePrice,
-            line.discount.discountType,
-            line.discount.discountValue,
-          ),
+          finalPrice: paypalPriceBreakdown.finalPrice,
         };
       }
 
       let platformXsolla: PromotionModel.PromotionLineXsolla | null = null;
       if (line.platformSync.xsolla && product.platforms.xsolla) {
+        const xsollaPriceBreakdown = this.calculatePriceBreakdown(
+          product.platforms.xsolla.basePrice,
+          line.discount.discountType,
+          line.discount.discountValue,
+        );
+
         platformXsolla = {
           promotionId: line.platformSync.xsolla.promotionId,
           baseSnapshot: product.platforms.xsolla?.basePrice,
-          finalPrice: this.calculateFinalPrice(
-            product.platforms.xsolla.basePrice,
-            line.discount.discountType,
-            line.discount.discountValue,
-          ),
+          finalPrice: xsollaPriceBreakdown.finalPrice,
         };
       }
 
@@ -135,12 +152,12 @@ export abstract class PromotionService {
     return data;
   }
 
-  private static calculateFinalPrice(
-    basePrice: number, // 9.99
-    discountType: DiscountTypeEnum, // PERCENT_OFF
-    discountValue: number, // 40
-  ) {
-    const basePriceInt = Math.round(basePrice * 100); // 999
+  private static calculatePriceBreakdown(
+    basePrice: number,
+    discountType: DiscountTypeEnum,
+    discountValue: number,
+  ): { finalPrice: number; discountAmount: number } {
+    const basePriceInt = Math.round(basePrice * 100);
     let discountAmountInt = 0;
 
     if (discountType === DiscountTypeEnum.PERCENT_OFF) {
@@ -158,6 +175,42 @@ export abstract class PromotionService {
       finalPriceInt = Math.floor(finalPriceInt / 100) * 100 + 99;
     }
 
-    return finalPriceInt / 100;
+    // Recalculate discount based on the forced final price
+    discountAmountInt = basePriceInt - finalPriceInt;
+
+    return {
+      finalPrice: finalPriceInt / 100,
+      discountAmount: discountAmountInt / 100,
+    };
+  }
+
+  static async deleteStripeCoupons(promotion: PromotionModel.Details) {
+    const newLines = [...promotion.lines];
+
+    for (let i = 0; i < promotion.lines.length; i++) {
+      const line = promotion.lines[i];
+
+      if (line.platformSync.stripe) {
+        const coupon = await stripe.coupons.retrieve(
+          line.platformSync.stripe?.couponId!,
+        );
+
+        if (coupon) {
+          line.platformSync.stripe.redeemedHistory = [
+            ...line.platformSync.stripe.redeemedHistory,
+            {
+              couponId: line.platformSync.stripe.couponId,
+              timesRedeemed: coupon.times_redeemed,
+            },
+          ];
+
+          newLines[i].platformSync.stripe = line.platformSync.stripe;
+
+          await stripe.coupons.del(line.platformSync.stripe.couponId);
+        }
+      }
+    }
+
+    return newLines;
   }
 }

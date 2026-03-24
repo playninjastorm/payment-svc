@@ -12,4 +12,5 @@ export const ENV = {
     Bun.env.ENABLE_DOCS.toLowerCase() === "true" ||
     Bun.env.ENABLE_DOCS === "1" ||
     false,
+  STRIPE_API_KEY: Bun.env.STRIPE_API_KEY || "",
 };

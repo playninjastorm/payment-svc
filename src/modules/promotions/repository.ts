@@ -77,7 +77,11 @@ export abstract class PromotionRepository {
     });
   }
 
-  static async updateState(id: string, state: PromotionModel.StateEnum) {
+  static async updateState(
+    id: string,
+    state: PromotionModel.StateEnum,
+    lines?: PromotionModel.PromotionLine[],
+  ) {
     const update: Record<string, any> = { state };
 
     if (state === PromotionModel.StateEnum.ACTIVE) {
@@ -88,6 +92,10 @@ export abstract class PromotionRepository {
     if (state === PromotionModel.StateEnum.ENDED) {
       if (!update.audit) update.audit = {};
       update.audit.endedAt = new Date();
+    }
+
+    if (lines) {
+      update.lines = lines;
     }
 
     return PromotionDB.findByIdAndUpdate(id, update, { new: true });

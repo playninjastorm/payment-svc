@@ -46,11 +46,11 @@ export namespace PromotionModel {
   export type Scope = typeof Scope.static;
 
   export const PromotionLineStripe = t.Object({
-    priceId: t.String({
-      title: "Stripe Promotion Price ID",
+    couponId: t.String({
+      title: "Stripe Promotion Coupon ID",
       minLength: 2,
       maxLength: 500,
-      examples: ["price_promo_usd_999"],
+      examples: ["Z7cOkP7l"],
     }),
     baseSnapshot: t.Number({
       title: "Base Price Snapshot Before Discount",
@@ -62,6 +62,23 @@ export namespace PromotionModel {
       minimum: 0,
       examples: [30.99],
     }),
+    redeemedHistory: t.Array(
+      t.Object({
+        couponId: t.Union([
+          t.String({
+            title: "Stripe Promotion Coupon ID",
+            examples: ["Z7cOkP7l"],
+          }),
+          t.Date(),
+        ]),
+        timesRedeemed: t.Number({
+          title: "Times Redeemed",
+          minimum: 0,
+          default: 0,
+          examples: [0],
+        }),
+      }),
+    ),
   });
   export type PromotionLineStripe = typeof PromotionLineStripe.static;
 
@@ -123,9 +140,15 @@ export namespace PromotionModel {
           default: null,
           examples: [
             {
-              priceId: "price_promo_usd_999",
+              couponId: "Z7cOkP7l",
               baseSnapshot: 49.99,
               finalPrice: 30.99,
+              redeemedHistory: [
+                {
+                  couponId: "Z7cOkP7l",
+                  timesRedeemed: 0,
+                },
+              ],
             },
           ],
         }),
@@ -261,28 +284,14 @@ export namespace PromotionModel {
           }),
           platformSync: t.Object({
             stripe: t.Optional(
-              t.Union(
-                [
-                  t.Object({
-                    priceId: t.String({
-                      title: "Stripe Promotion Price ID",
-                      minLength: 2,
-                      maxLength: 500,
-                      examples: ["price_promo_usd_999"],
-                    }),
-                  }),
-                  t.Null(),
-                ],
-                {
-                  title: "Stripe Promotion Price Info",
-                  default: null,
-                  examples: [
-                    {
-                      priceId: "price_promo_usd_999",
-                    },
-                  ],
-                },
-              ),
+              t.Boolean({
+                title: "Apply promotion on Stripe",
+              }),
+            ),
+            paypal: t.Optional(
+              t.Boolean({
+                title: "Apply promotion on PayPal",
+              }),
             ),
             xsolla: t.Optional(
               t.Union(

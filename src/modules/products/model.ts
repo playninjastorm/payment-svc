@@ -12,13 +12,13 @@ export namespace ProductModel {
       title: "Stripe Product ID",
       minLength: 2,
       maxLength: 500,
-      examples: ["price_1QMLyvFWwrZP60SHXerlkn51"],
+      examples: ["prod_REnB3RY9l39ePm"],
     }),
     defaultPriceId: t.String({
       title: "Stripe Default Price ID",
       minLength: 2,
       maxLength: 500,
-      examples: ["price_1QMLyyFWwrZP60SHbsqvLpKa"],
+      examples: ["price_1QMJbMFWwrZP60SHQNBwVWDZ"],
     }),
     basePrice: t.Number({
       minimum: 0,

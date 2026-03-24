@@ -37,7 +37,7 @@ const promotionScopeSchema = new Schema<PromotionModel.Scope>(
 const promotionLinesStripeSchema =
   new Schema<PromotionModel.PromotionLineStripe>(
     {
-      priceId: {
+      couponId: {
         type: String,
         required: true,
       },
@@ -51,6 +51,19 @@ const promotionLinesStripeSchema =
         required: true,
         min: 0,
       },
+      redeemedHistory: [
+        {
+          couponId: {
+            type: String,
+            required: true,
+          },
+          timesRedeemed: {
+            type: Number,
+            required: true,
+            min: 0,
+          },
+        },
+      ],
     },
     { _id: false },
   );

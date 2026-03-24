@@ -1,1 +1,2 @@
 - Agregar testing: https://elysiajs.com/patterns/unit-test.html
+- TODO: VALIDAR API KEY
