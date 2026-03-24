@@ -29,21 +29,21 @@ export const productsRouter = new Elysia({
   .get(
     "/store",
     async () => {
-      const items = await ProductService.storeList();
+      const data = await ProductService.storeList();
 
       return {
         code: 200,
         message: "Products store route is working",
-        data: { items },
+        data,
       };
     },
     {
       response: {
-        200: HttpDTO.ResponseDataList(ProductModel.Store),
+        200: HttpDTO.ResponseDataList(
+          ProductModel.Store,
+          ProductModel.StoreMetadata,
+        ),
         500: HttpDTO.ResponseInternalError,
       },
     },
   );
-
-// TODO: Hacer un endpoint get, que dependiendo de la tienda retorne el monto para esa store
-// TODO: Podria ser /store y que solo devuelva la data de esa tienda en especifica

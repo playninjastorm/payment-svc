@@ -8,6 +8,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Emblem",
     sku: CodeEnum.EMBLEM_ELITE,
+    quantity: 1,
     active: true,
     platforms: {
       stripe: {
@@ -28,6 +29,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_30000,
+    quantity: 30000,
     active: true,
     platforms: {
       stripe: {
@@ -48,6 +50,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_13500,
+    quantity: 13500,
     active: true,
     platforms: {
       stripe: {
@@ -68,6 +71,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_5000,
+    quantity: 5000,
     active: true,
     platforms: {
       stripe: {
@@ -88,6 +92,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_2000,
+    quantity: 2000,
     active: true,
     platforms: {
       stripe: {
@@ -108,6 +113,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_1000,
+    quantity: 1000,
     active: true,
     platforms: {
       stripe: {
@@ -125,6 +131,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
   {
     name: "Token",
     sku: CodeEnum.TOKEN_500,
+    quantity: 500,
     active: true,
     platforms: {
       stripe: {

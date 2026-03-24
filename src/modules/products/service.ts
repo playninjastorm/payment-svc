@@ -13,7 +13,7 @@ export abstract class ProductService {
   static async storeList() {
     const items = await ProductRepository.list();
 
-    const products = await PromotionRepository.listActiveProducts();
+    const activePromotions = await PromotionRepository.listActiveProducts();
 
     const storeItems: ProductModel.Store[] = [];
 
@@ -24,7 +24,7 @@ export abstract class ProductService {
     const DEFAULT_OFFER_LABEL = `${DISCOUNT_DEFAULT.discountValue}% off`;
 
     for (const item of items) {
-      const promotion = products.find((p) => p.sku === item.sku);
+      const promotion = activePromotions.find((p) => p.sku === item.sku);
 
       const discount = promotion ? promotion.discount : DISCOUNT_DEFAULT;
 
@@ -44,6 +44,8 @@ export abstract class ProductService {
 
       storeItems.push({
         sku: item.sku,
+        name: item.name,
+        quantity: item.quantity,
         display: {
           ...discount,
           label: offerLabel,
@@ -65,7 +67,12 @@ export abstract class ProductService {
       });
     }
 
-    return storeItems;
+    return {
+      items: storeItems,
+      metadata: {
+        hasPromotions: activePromotions.length > 0,
+      },
+    };
   }
 
   static async createBulk(products: ProductModel.Create[]) {

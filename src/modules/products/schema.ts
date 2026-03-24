@@ -81,6 +81,11 @@ const productSchema = new Schema<ProductModel.Details>(
       enum: CodeEnum,
       required: true,
     },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
     active: {
       type: Boolean,
       required: true,

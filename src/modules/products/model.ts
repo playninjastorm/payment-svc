@@ -74,6 +74,11 @@ export namespace ProductModel {
         maxLength: 100,
         examples: ["Token", "Emblem"],
       }),
+      quantity: t.Number({
+        title: "Product Quantity",
+        minimum: 1,
+        examples: [1, 5, 10],
+      }),
       sku: t.Enum(CodeEnum, {
         title: "Product SKU",
         examples: [CodeEnum.TOKEN_30000],
@@ -112,6 +117,17 @@ export namespace ProductModel {
       title: "Product SKU",
       examples: [CodeEnum.TOKEN_30000],
     }),
+    name: t.String({
+      title: "Product Name",
+      minLength: 2,
+      maxLength: 100,
+      examples: ["Token", "Emblem"],
+    }),
+    quantity: t.Number({
+      title: "Product Quantity",
+      minimum: 1,
+      examples: [1, 5, 10],
+    }),
     display: t.Object({
       discountType: t.Enum(DiscountTypeEnum, {
         title: "Discount Type",
@@ -149,4 +165,12 @@ export namespace ProductModel {
     }),
   });
   export type Store = typeof Store.static;
+
+  export const StoreMetadata = t.Object({
+    hasPromotions: t.Boolean({
+      title: "Has Promotions",
+      examples: [true, false],
+    }),
+  });
+  export type StoreMetadata = typeof StoreMetadata.static;
 }

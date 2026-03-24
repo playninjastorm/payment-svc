@@ -34,7 +34,10 @@ export namespace HttpDTO {
     ReturnType<typeof ResponseData<TData>>
   >;
 
-  export const ResponseDataList = <TData extends TSchema>(dataSchema: TData) =>
+  export const ResponseDataList = <TData extends TSchema>(
+    dataSchema: TData,
+    metadataSchema?: TSchema,
+  ) =>
     t.Object({
       code: t.Number({
         title: "Response Code",
@@ -49,6 +52,9 @@ export namespace HttpDTO {
         items: t.Array(dataSchema, {
           title: "List of Items",
         }),
+        metadata: t.Optional(
+          metadataSchema ? metadataSchema : t.Object(t.Any()),
+        ),
       }),
     });
 
@@ -58,6 +64,7 @@ export namespace HttpDTO {
 
   export const ResponseDataListPagination = <TData extends TSchema>(
     dataSchema: TData,
+    metadataSchema?: TSchema,
   ) =>
     t.Object({
       code: t.Number({
@@ -109,6 +116,7 @@ export namespace HttpDTO {
             }),
           ),
         }),
+        metadata: metadataSchema ? metadataSchema : t.Object(t.Any()),
       }),
     });
 
