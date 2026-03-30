@@ -147,6 +147,25 @@ export namespace ProductModel {
   export const Create = t.Omit(Details, ["id", "createdAt", "updatedAt"]);
   export type Create = typeof Create.static;
 
+  export const StorePlatform = t.Object({
+    discountType: t.Enum(DiscountTypeEnum, {
+      title: "Discount Type",
+      examples: [DiscountTypeEnum.PERCENT_OFF, DiscountTypeEnum.AMOUNT_OFF],
+    }),
+    discountValue: t.Number({
+      title: "Discount Value",
+      minimum: 0,
+      examples: [41.18],
+    }),
+    label: t.String({
+      title: "Discount Label",
+      minLength: 2,
+      maxLength: 50,
+      examples: ["40% OFF", "20% OFF"],
+    }),
+    price: t.Number({ minimum: 0 }),
+  });
+
   export const Store = t.Object({
     sku: t.Enum(CodeEnum, {
       title: "Product SKU",
@@ -163,39 +182,10 @@ export namespace ProductModel {
       minimum: 1,
       examples: [1, 5, 10],
     }),
-    display: t.Object({
-      discountType: t.Enum(DiscountTypeEnum, {
-        title: "Discount Type",
-        examples: [DiscountTypeEnum.PERCENT_OFF, DiscountTypeEnum.AMOUNT_OFF],
-      }),
-      discountValue: t.Number({
-        title: "Discount Value",
-        minimum: 0,
-        examples: [41.18],
-      }),
-      label: t.String({
-        title: "Discount Label",
-        minLength: 2,
-        maxLength: 50,
-        examples: ["40% OFF", "20% OFF"],
-      }),
-      prices: t.Object({
-        stripe: t.Optional(
-          t.Union([t.Number({ minimum: 0 }), t.Null()], {
-            title: "Stripe Price",
-          }),
-        ),
-        paypal: t.Optional(
-          t.Union([t.Number({ minimum: 0 }), t.Null()], {
-            title: "PayPal Price",
-          }),
-        ),
-        xsolla: t.Optional(
-          t.Union([t.Number({ minimum: 0 }), t.Null()], {
-            title: "Xsolla Price",
-          }),
-        ),
-      }),
+    platforms: t.Object({
+      stripe: t.Union([StorePlatform, t.Null()], { default: null }),
+      paypal: t.Union([StorePlatform, t.Null()], { default: null }),
+      xsolla: t.Union([StorePlatform, t.Null()], { default: null }),
     }),
   });
   export type Store = typeof Store.static;
