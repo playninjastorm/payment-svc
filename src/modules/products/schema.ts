@@ -2,7 +2,10 @@ import { Schema, InferSchemaType, model } from "mongoose";
 
 import { DEFAULT_OPTIONS_SCHEMA } from "@/commons/utils/db.utils";
 import { ProductModel } from "@/modules/products/model";
-import { CodeEnum } from "@/commons/models/productPromotion.model";
+import {
+  CodeEnum,
+  DiscountTypeEnum,
+} from "@/commons/models/productPromotion.model";
 
 const productPlatormStripeSchema = new Schema<ProductModel.PlatformStripe>(
   {
@@ -20,6 +23,10 @@ const productPlatormStripeSchema = new Schema<ProductModel.PlatformStripe>(
       type: Number,
       required: true,
     },
+    defaultPrice: {
+      type: Number,
+      required: true,
+    },
   },
   { _id: false },
 );
@@ -34,6 +41,10 @@ const productPlatformPaypalSchema = new Schema<ProductModel.PlatformPaypal>(
       type: Number,
       required: true,
     },
+    defaultPrice: {
+      type: Number,
+      required: true,
+    },
   },
   { _id: false },
 );
@@ -45,6 +56,10 @@ const productPlatformXsollaSchema = new Schema<ProductModel.PlatformXsolla>(
       required: true,
     },
     basePrice: {
+      type: Number,
+      required: true,
+    },
+    defaultPrice: {
       type: Number,
       required: true,
     },
@@ -90,6 +105,15 @@ const productSchema = new Schema<ProductModel.Details>(
       type: Boolean,
       required: true,
       default: true,
+    },
+    defaultDiscountType: {
+      type: String,
+      enum: DiscountTypeEnum,
+      required: false,
+    },
+    defaultDiscountValue: {
+      type: Number,
+      required: false,
     },
     platforms: {
       type: productPlatformsSchema,

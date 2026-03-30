@@ -21,6 +21,14 @@ export namespace ProductModel {
       examples: ["price_1QMJbMFWwrZP60SHQNBwVWDZ"],
     }),
     basePrice: t.Number({
+      title: "Base Price",
+      description: "Base price without discount",
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
+    defaultPrice: t.Number({
+      title: "Default Price",
+      description: "Price after default discount",
       minimum: 0,
       examples: [49.99, 24.99, 9.99],
     }),
@@ -35,6 +43,14 @@ export namespace ProductModel {
       examples: ["PROD-30000"],
     }),
     basePrice: t.Number({
+      title: "Base Price",
+      description: "Base price without discount",
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
+    defaultPrice: t.Number({
+      title: "Default Price",
+      description: "Price after default discount",
       minimum: 0,
       examples: [49.99, 24.99, 9.99],
     }),
@@ -49,6 +65,14 @@ export namespace ProductModel {
       examples: [CodeEnum.TOKEN_30000],
     }),
     basePrice: t.Number({
+      title: "Base Price",
+      description: "Base price without discount",
+      minimum: 0,
+      examples: [49.99, 24.99, 9.99],
+    }),
+    defaultPrice: t.Number({
+      title: "Default Price",
+      description: "Price after default discount",
       minimum: 0,
       examples: [49.99, 24.99, 9.99],
     }),
@@ -86,6 +110,17 @@ export namespace ProductModel {
       active: t.Boolean({
         title: "Is Active",
         default: true,
+      }),
+      defaultDiscountType: t.Enum(DiscountTypeEnum, {
+        title: "Discount Type",
+        description: "Discount type for default price",
+        examples: [DiscountTypeEnum.PERCENT_OFF, DiscountTypeEnum.AMOUNT_OFF],
+      }),
+      defaultDiscountValue: t.Number({
+        title: "Discount Value",
+        description: "Discount value for default price",
+        minimum: 0,
+        examples: [41.18],
       }),
       platforms: Platforms,
       createdAt: t.Union(
@@ -136,7 +171,6 @@ export namespace ProductModel {
       discountValue: t.Number({
         title: "Discount Value",
         minimum: 0,
-        maximum: 100,
         examples: [41.18],
       }),
       label: t.String({

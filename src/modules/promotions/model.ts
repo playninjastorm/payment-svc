@@ -129,7 +129,6 @@ export namespace PromotionModel {
       discountValue: t.Number({
         title: "Discount Value",
         minimum: 0,
-        maximum: 100,
         examples: [41.18],
       }),
     }),
@@ -278,7 +277,6 @@ export namespace PromotionModel {
             discountValue: t.Number({
               title: "Discount Value",
               minimum: 0,
-              maximum: 100,
               examples: [41.18],
             }),
           }),

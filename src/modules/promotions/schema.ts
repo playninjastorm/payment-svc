@@ -2,7 +2,6 @@ import { Schema, InferSchemaType, model } from "mongoose";
 
 import { DEFAULT_OPTIONS_SCHEMA } from "@/commons/utils/db.utils";
 import { PromotionModel } from "@/modules/promotions/model";
-import { ProductModel } from "@/modules/products/model";
 import {
   CodeEnum,
   DiscountTypeEnum,

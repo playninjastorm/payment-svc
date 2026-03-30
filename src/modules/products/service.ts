@@ -17,18 +17,17 @@ export abstract class ProductService {
 
     const storeItems: ProductModel.Store[] = [];
 
-    const DISCOUNT_DEFAULT = {
-      discountType: DiscountTypeEnum.PERCENT_OFF,
-      discountValue: 33,
-    };
-    const DEFAULT_OFFER_LABEL = `${DISCOUNT_DEFAULT.discountValue}% off`;
-
     for (const item of items) {
       const promotion = activePromotions.find((p) => p.sku === item.sku);
 
-      const discount = promotion ? promotion.discount : DISCOUNT_DEFAULT;
+      const discount = promotion
+        ? promotion.discount
+        : {
+            discountType: item.defaultDiscountType,
+            discountValue: item.defaultDiscountValue,
+          };
 
-      let offerLabel = DEFAULT_OFFER_LABEL;
+      let offerLabel = "";
 
       if (promotion) {
         if (promotion.discount.discountType === DiscountTypeEnum.PERCENT_OFF) {
@@ -37,8 +36,12 @@ export abstract class ProductService {
           promotion.discount.discountType === DiscountTypeEnum.AMOUNT_OFF
         ) {
           offerLabel = `$${promotion.discount.discountValue} off`;
-        } else {
-          offerLabel = "";
+        }
+      } else {
+        if (item.defaultDiscountType === DiscountTypeEnum.PERCENT_OFF) {
+          offerLabel = `${item.defaultDiscountValue}% off`;
+        } else if (item.defaultDiscountType === DiscountTypeEnum.AMOUNT_OFF) {
+          offerLabel = `$${item.defaultDiscountValue} off`;
         }
       }
 
@@ -52,15 +55,15 @@ export abstract class ProductService {
           prices: {
             stripe:
               promotion?.platformSync.stripe?.finalPrice ??
-              item.platforms.stripe?.basePrice ??
+              item.platforms.stripe?.defaultPrice ??
               null,
             paypal:
               promotion?.platformSync.paypal?.finalPrice ??
-              item.platforms.paypal?.basePrice ??
+              item.platforms.paypal?.defaultPrice ??
               null,
             xsolla:
               promotion?.platformSync.xsolla?.finalPrice ??
-              item.platforms.xsolla?.basePrice ??
+              item.platforms.xsolla?.defaultPrice ??
               null,
           },
         },
