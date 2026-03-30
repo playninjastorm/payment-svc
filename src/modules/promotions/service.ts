@@ -88,7 +88,7 @@ export abstract class PromotionService {
         );
 
         const stripeCoupon = await stripe.coupons.create({
-          amount_off: stripePriceBreakdown.discountAmount * 100, // Stripe expects amounts in cents
+          amount_off: Math.round(stripePriceBreakdown.discountAmount * 100), // Stripe expects amounts in cents
           name: payload.name,
           currency: "usd",
         });
