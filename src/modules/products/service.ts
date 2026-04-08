@@ -18,7 +18,9 @@ export abstract class ProductService {
       PromotionRepository.listActiveProducts(),
     ]);
 
-    const storeItems: ProductModel.Store[] = items.map((item) => {
+    const storeItems: ProductModel.Store[] = items
+    .sort((a, b) => b.quantity - a.quantity)
+    .map((item) => {
       const promotion = activePromotions.find((p) => p.sku === item.sku);
       const defaultLabel = this.formatDiscountLabel(
         item.defaultDiscountType,
@@ -88,7 +90,7 @@ export abstract class ProductService {
       ? (promotion!.platformSync[platform] as { finalPrice: number }).finalPrice
       : platformConfig.defaultPrice;
 
-    return { discountType, discountValue, label, price };
+    return { discountType, discountValue, label, price, hasPromotions: hasPromoSync };
   }
 }
 

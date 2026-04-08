@@ -1,6 +1,5 @@
 import { t } from "elysia";
 
-import { PromotionModel } from "@/modules/promotions/model";
 import {
   CodeEnum,
   DiscountTypeEnum,
@@ -164,6 +163,11 @@ export namespace ProductModel {
       examples: ["40% OFF", "20% OFF"],
     }),
     price: t.Number({ minimum: 0 }),
+    hasPromotions: t.Boolean({
+      title: "Has Promotions",
+      description: "Whether this platform has an active promotion",
+      examples: [true, false],
+    }),
   });
 
   export const Store = t.Object({
