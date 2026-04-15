@@ -172,7 +172,7 @@ const PRODUCTS_SEED_DATA: ProductModel.Create[] = [
         productId: "prod_REnB3RY9l39ePm",
         defaultPriceId: "price_1QMJbMFWwrZP60SHQNBwVWDZ",
         basePrice: 2.97,
-        defaultPrice: 2.97,
+        defaultPrice: 1.99,
       },
       paypal: null,
       xsolla: null,

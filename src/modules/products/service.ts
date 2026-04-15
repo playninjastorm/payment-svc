@@ -9,7 +9,11 @@ const PLATFORMS: PlatformKey[] = ["stripe", "paypal", "xsolla"];
 
 export abstract class ProductService {
   static async list() {
-    return ProductRepository.list();
+    const items = await ProductRepository.list();
+
+    const orderedItems = items.sort((a, b) => b.quantity - a.quantity);
+
+    return orderedItems;
   }
 
   static async storeList() {
@@ -19,28 +23,28 @@ export abstract class ProductService {
     ]);
 
     const storeItems: ProductModel.Store[] = items
-    .sort((a, b) => b.quantity - a.quantity)
-    .map((item) => {
-      const promotion = activePromotions.find((p) => p.sku === item.sku);
-      const defaultLabel = this.formatDiscountLabel(
-        item.defaultDiscountType,
-        item.defaultDiscountValue,
-      );
+      .sort((a, b) => b.quantity - a.quantity)
+      .map((item) => {
+        const promotion = activePromotions.find((p) => p.sku === item.sku);
+        const defaultLabel = this.formatDiscountLabel(
+          item.defaultDiscountType,
+          item.defaultDiscountValue,
+        );
 
-      const platforms = Object.fromEntries(
-        PLATFORMS.map((key) => [
-          key,
-          this.buildStorePlatform(item, promotion, key, defaultLabel),
-        ]),
-      ) as ProductModel.Store["platforms"];
+        const platforms = Object.fromEntries(
+          PLATFORMS.map((key) => [
+            key,
+            this.buildStorePlatform(item, promotion, key, defaultLabel),
+          ]),
+        ) as ProductModel.Store["platforms"];
 
-      return {
-        sku: item.sku,
-        name: item.name,
-        quantity: item.quantity,
-        platforms,
-      };
-    });
+        return {
+          sku: item.sku,
+          name: item.name,
+          quantity: item.quantity,
+          platforms,
+        };
+      });
 
     return {
       items: storeItems,
@@ -90,7 +94,13 @@ export abstract class ProductService {
       ? (promotion!.platformSync[platform] as { finalPrice: number }).finalPrice
       : platformConfig.defaultPrice;
 
-    return { discountType, discountValue, label, price, hasPromotions: hasPromoSync };
+    return {
+      discountType,
+      discountValue,
+      label,
+      price,
+      hasPromotions: hasPromoSync,
+    };
   }
 }
 
